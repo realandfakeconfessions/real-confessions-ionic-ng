@@ -1,0 +1,7 @@
+{
+  "name": "real-confessions-ionic-ng-v3",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
