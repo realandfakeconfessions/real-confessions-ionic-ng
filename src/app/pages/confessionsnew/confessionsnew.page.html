@@ -1,0 +1,70 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Add a Confession Page</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="dark" fill="solid" (click)="dismissModal()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <h1>Do not think twice, just write your confession!</h1>
+
+  <form [formGroup]="confessionsForm" (ngSubmit)="createRecord()">
+  <ion-list>
+    <ion-item>
+      <ion-label>Language:</ion-label>
+      <ion-select formControlName="clanguage" placeholder="Select One">
+        <ion-select-option *ngFor="let lang of languageList" [value]="lang">{{lang.lcode + ' ' + lang.lname}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+  </ion-list>
+  <ion-list>
+  <ion-item>
+    <ion-label position="floating">Title:</ion-label>
+    <ion-input formControlName="ctitle"></ion-input>
+  </ion-item>
+  </ion-list>
+  <ion-list>
+    <ion-radio-group formControlName="cisreal">
+        <ion-list-header>
+        <ion-label>Fake:</ion-label>
+        </ion-list-header>
+        <ion-item>
+        <ion-label>Yes</ion-label>
+        <ion-radio slot="start" color="success" value="false"></ion-radio>
+        </ion-item>
+        <ion-item>
+        <ion-label>No</ion-label>
+        <ion-radio slot="start" color="success" value="true"></ion-radio>
+        </ion-item>
+   </ion-radio-group>
+  </ion-list>
+  <ion-list>
+    <ion-item>
+     <ion-label>Categories:</ion-label>
+     <ion-select formControlName="ccategory" placeholder="Select One">
+       <ion-select-option *ngFor="let cat of categoryList" [value]="cat">{{cat.cname}}</ion-select-option>
+       </ion-select>
+   </ion-item>
+  </ion-list>
+  <ion-list>
+  <ion-item>
+    <ion-label position="floating">My secret is:</ion-label>
+    <ion-textarea formControlName="ctext" rows="6" cols="20"></ion-textarea>
+  </ion-item>
+  <ion-item>
+    <!--<p>Date: {{dateString}}</p>-->
+  </ion-item>
+
+  <ion-item>
+    <ion-button (click)="createRecord()" [disabled]="confessionsForm.invalid">
+      <ion-icon size="small" slot="icon-only" name="add"></ion-icon>
+      &nbsp;Create Record
+    </ion-button>
+  </ion-item>
+  </ion-list>
+  </form>
+
+</ion-content>

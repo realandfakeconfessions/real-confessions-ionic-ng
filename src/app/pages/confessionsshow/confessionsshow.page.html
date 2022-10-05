@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Confession Details</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="dark" fill="solid" (click)="dismissModal2()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <h1>Show your confession details!</h1>
+
+    <ion-card color="primary">
+        <ion-card-header>
+          <ion-card-title>Confession id: {{rowId}}</ion-card-title>
+          <ion-card-title>Language: {{confessionsint.clanguage.lname}}</ion-card-title>
+          <ion-card-title>Title: {{confessionsint.ctitle}}</ion-card-title>
+          <ion-card-title>Real: {{confessionsint.cisreal}}</ion-card-title>
+          <ion-card-title>Category: {{confessionsint.ccategory.cname}}</ion-card-title>
+          <ion-card-title>Text: {{confessionsint.ctext}}</ion-card-title>
+          <ion-card-title>Date: {{confessionsint.cdate}}</ion-card-title>
+          <ion-card-title>Urltext: {{confessionsint.curltext}}</ion-card-title>
+          <ion-card-title>Urlaudio: {{confessionsint.curlaudio}}</ion-card-title>
+          <ion-card-title>Conveteds1: {{confessionsint.converteds1}}</ion-card-title>
+          <ion-card-title>Converteds2: {{confessionsint.converteds2}}</ion-card-title>
+        </ion-card-header>
+    </ion-card>
+
+</ion-content>

@@ -1,0 +1,88 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button color="dark"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Categories Page</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="false" class="ion-padding">
+<h1>Categories Page</h1>
+
+<form [formGroup]="categoryForm" (ngSubmit)="createRecord()">
+
+  <ion-item>
+    <ion-label position="floating">Category Name</ion-label>
+    <ion-input formControlName="cname"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Category Description</ion-label>
+    <ion-input formControlName="cdescription"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-button (click)="createRecord()"  [disabled]="categoryForm.invalid">
+      <ion-icon size="small" slot="icon-only" name="add"></ion-icon>
+      &nbsp;Create Record
+    </ion-button>
+  </ion-item>
+
+</form>
+
+  <ion-card *ngFor="let item of categoryList" color="primary">
+    <span *ngIf="!item.isEdit; else elseBlock">
+      <ion-card-header>
+        <!--<ion-card-title>{{item.id}}</ion-card-title>-->
+        <ion-card-title>{{item.cname}}</ion-card-title>
+        <ion-card-title>{{item.cdescription}}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+
+        <ion-button shape="round" color="secondary" size="small" (click)="editRecord(item)">
+          <ion-icon size="small" slot="icon-only" name="create"></ion-icon>
+
+        </ion-button>
+        <ion-button shape="round" color="danger" size="small" (click)="removeRecord(item.id)">
+          <ion-icon size="small" slot="icon-only" name="trash"></ion-icon>
+
+        </ion-button>
+      </ion-card-content>
+    </span>
+    <ng-template #elseBlock>
+      <ion-card-header>
+        <ion-card-title>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                Edit
+              </ion-col>
+              <ion-col>
+                <ion-button fill="solid" color="medium" size="small" (click)="item.isEdit = false">
+                  Cancel
+                </ion-button>
+              </ion-col>
+              <ion-col>
+                <ion-button fill="solid" color="success" size="small" (click)="updateRecord(item)">
+                  Update
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+       <ion-item>
+          <ion-label><strong>Category Name</strong></ion-label>
+          <ion-input type="text" [(ngModel)]="item.Editcname"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label><strong>Category Description</strong></ion-label>
+          <ion-input type="text" [(ngModel)]="item.Editcdescription"></ion-input>
+        </ion-item>
+      </ion-card-content>
+    </ng-template>
+  </ion-card>
+
+</ion-content>

@@ -1,0 +1,98 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button color="dark"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Languages Page</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="false" class="ion-padding">
+<h1>Languages Page</h1>
+
+<form [formGroup]="languageForm" (ngSubmit)="createRecord()">
+
+  <ion-item>
+    <ion-label position="floating">Language Code</ion-label>
+    <ion-input formControlName="lcode"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Language Name</ion-label>
+    <ion-input formControlName="lname"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Language Country</ion-label>
+    <ion-input formControlName="lcountry"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-button (click)="createRecord()"  [disabled]="languageForm.invalid">
+      <ion-icon size="small" slot="icon-only" name="add"></ion-icon>
+      &nbsp;Create Record
+    </ion-button>
+  </ion-item>
+
+</form>
+
+  <ion-card *ngFor="let item of languageList" color="primary">
+    <span *ngIf="!item.isEdit; else elseBlock">
+      <ion-card-header>
+        <!--<ion-card-title>{{item.id}}</ion-card-title>-->
+        <ion-card-title>{{item.lcode}}</ion-card-title>
+        <ion-card-title>{{item.lname}}</ion-card-title>
+        <ion-card-title>{{item.lcountry}}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+
+        <ion-button shape="round" color="secondary" size="small" (click)="editRecord(item)">
+          <ion-icon size="small" slot="icon-only" name="create"></ion-icon>
+
+        </ion-button>
+        <ion-button shape="round" color="danger" size="small" (click)="removeRecord(item.id)">
+          <ion-icon size="small" slot="icon-only" name="trash"></ion-icon>
+
+        </ion-button>
+      </ion-card-content>
+    </span>
+    <ng-template #elseBlock>
+      <ion-card-header>
+        <ion-card-title>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                Edit
+              </ion-col>
+              <ion-col>
+                <ion-button fill="solid" color="medium" size="small" (click)="item.isEdit = false">
+                  Cancel
+                </ion-button>
+              </ion-col>
+              <ion-col>
+                <ion-button fill="solid" color="success" size="small" (click)="updateRecord(item)">
+                  Update
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+          <ion-label><strong>Language Code</strong></ion-label>
+          <ion-input type="text" [(ngModel)]="item.Editlcode"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label><strong>Language Name</strong></ion-label>
+          <ion-input type="text" [(ngModel)]="item.Editlname"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label><strong>Language Country</strong></ion-label>
+          <ion-input type="text" [(ngModel)]="item.Editlcountry"></ion-input>
+        </ion-item>
+      </ion-card-content>
+    </ng-template>
+  </ion-card>
+
+</ion-content>
