@@ -21,14 +21,29 @@ export class CserviceService {
   // ref => ref.orderBy('cdate', 'asc')
   // ref => ref.orderBy('cdate', 'desc')
   readConfessions(){
+    return this.firestore.collection(this.collectionName).snapshotChanges();
+  }
+
+  readConfessions2(){
     return this.firestore.collection(this.collectionName,
       ref => ref.limit(1000).orderBy("clanguage.lcode", "asc")).snapshotChanges();
   }
 
-  findConf<tipo>(path: string) {
+  readConfessions3(lcode: string){
+    const docRef = this.firestore.collection(this.collectionName, ref => ref.where("clanguage", "==", lcode)).snapshotChanges();
+    return docRef;
+  }
+
+  findAllobj<tipo>(path: string) {
     const docRef = this.firestore.collection<tipo>(path).valueChanges();
     return docRef;
   }
+
+  findAllobjObservable<tipo>(path: string, lcode: string) {
+    const docRef = this.firestore.collection<tipo>(path, ref => ref.where("clanguage", "==", lcode)).valueChanges();
+    return docRef;
+  }
+
 
   createConfessions(confess){
     console.log(confess);

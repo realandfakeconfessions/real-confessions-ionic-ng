@@ -41,7 +41,7 @@ export class LanguagesPage implements OnInit {
          lcountry: e.payload.doc.data()['lcountry'],
        };
      })
-
+     console.log("My lang list: ", this.languageList.map(myv => myv));
    });
  }
 

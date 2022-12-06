@@ -92,10 +92,10 @@ export class ConfessionsnewPage implements OnInit {
     createRecord() {
 
       this.confessionsForm2 = this.fb2.group({
-        clanguage: [this.confessionsForm.value.clanguage],
+        clanguage: [this.confessionsForm.value.clanguage.lcode],
         ctitle: [this.confessionsForm.value.ctitle],
         cisreal: [this.confessionsForm.value.cisreal],
-        ccategory: [this.confessionsForm.value.ccategory],
+        ccategory: [this.confessionsForm.value.ccategory.cname],
         ctext: [this.confessionsForm.value.ctext],
         cdate: [this.dateString],
         curltext: [this.serverurl.concat(this.confessionsForm.value.clanguage.lcode, "-",

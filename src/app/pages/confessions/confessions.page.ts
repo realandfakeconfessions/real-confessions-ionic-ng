@@ -13,6 +13,7 @@ import { ConfessionsnewPage } from '../confessionsnew/confessionsnew.page';
 import { ConfessionsshowPage } from '../confessionsshow/confessionsshow.page';
 
 import { ConfessionsInt } from './confessionsint';
+import { LanguageInt } from '../languages/languageint';
 
 
 @Component({
@@ -26,9 +27,18 @@ export class ConfessionsPage implements OnInit {
   apublicVar: string = "apublicVar with default value";
   cid: string = "noID";
   public static cid2: string = "tizdOZmPV9ZzCTueE3Nv";
+  public selectedlang: LanguageInt;
+  public defaulseletlang: string;
+  langlist: LanguageInt[] = [];
+  langlist2: LanguageInt[] = [];
+  conflist: ConfessionsInt[] = [];
+  private colleclang = 'Languages';
 
-  confessionsList = [];
-  private path = 'Confessions';
+  confessionsList2 = [];
+
+  confessionsList: ConfessionsInt[] = [];
+  langlistcodes: LanguageInt[] = [];
+  private colleccon = 'Confessions';
   confessionsint: ConfessionsInt;
 
   constructor(
@@ -40,41 +50,19 @@ export class ConfessionsPage implements OnInit {
 
   ngOnInit() {
     this.languages = this.activatedRoute.snapshot.paramMap.get('id');
-
-    // Read the confessions' list
-    this.cserviceService.readConfessions().subscribe(data => {
-
-      this.confessionsList = data.map(e => {
-        return {
-          id: e.payload.doc['id'],
-          isEdit: false,
-          clanguage: e.payload.doc.data()['clanguage'],
-          ctitle: e.payload.doc.data()['ctitle'],
-          cisreal: e.payload.doc.data()['cisreal'],
-          ccategory: e.payload.doc.data()['ccategory'],
-          ctext: e.payload.doc.data()['ctext'],
-          cdate: e.payload.doc.data()['cdate'],
-          curltext: e.payload.doc.data()['curltext'],
-          curlaudio: e.payload.doc.data()['curlaudio'],
-          converteds1: e.payload.doc.data()['converteds1'],
-          converteds2: e.payload.doc.data()['converteds2'],
-        };
-      })
-      console.log("First thing to load is my list: " +this.confessionsList.map(x => x.id));
-    });
-
+    console.log("somehow I need an activateroute var, So I added: ", this.languages);
+    this.chooseALanguage();
   }
-
 
  /**
  * Edit a confession record
  */
   editRecord(record) {
    record.isEdit = true;
-   record.Editclanguage = record.clanguage.lcode;
+   record.Editclanguage = record.clanguage;
    record.Editctitle = record.ctitle;
    record.Editcisreal = record.cisreal;
-   record.Editccategory = record.ccategory.cname;
+   record.Editccategory = record.ccategory;
    record.Editctext = record.ctext;
    record.Editcdate = record.cdate;
    record.Editcurltext = record.curltext;
@@ -113,13 +101,14 @@ export class ConfessionsPage implements OnInit {
  */
 findConfbyid(rowID) {
 
+  console.log(rowID);
   console.log("apublicVar value is without a change: ", this.apublicVar);
   this.cid = rowID;
   ConfessionsPage.cid2 = rowID;
 
   if (Object.keys(this.confessionsint).length === 0) {
   console.log("this.confessionsint value is empty: ", this.confessionsint);
-  this.cserviceService.findConfbyid<ConfessionsInt>(this.path, rowID).subscribe( res => {
+  this.cserviceService.findConfbyid<ConfessionsInt>(this.colleccon, rowID).subscribe( res => {
          this.confessionsint = res;
          console.log("this.confessionint is: ", this.confessionsint);
   });
@@ -132,6 +121,148 @@ findConfbyid(rowID) {
   console.log("The selected confession id is: ", this.cid);
 
   this.openCardModal2();
+}
+
+/**
+* Load allowed languages.
+* The user choose a language and the confessions
+* are showed in that language
+*/
+chooseALanguage(){
+  this.cserviceService.findAllobj<LanguageInt>(this.colleclang).subscribe( res => {
+         //console.log(res);
+         this.langlist = res;
+         console.log("my lang list length: ", this.langlist.length);
+         //console.log("My lang list:", this.langlist);
+         this.defaulseletlang = this.langlist[3].lcode;
+         console.log("My default language is:", this.defaulseletlang);
+         for(let i = 0; i < this.langlist.length; i++){
+           //console.log("my language code value is: ", this.langlist[i].lcode);
+           if(this.selectedlang == undefined && this.langlist[i].lcode == "en"){
+             console.log("English code: ", this.langlist[i].lcode);
+             var docRef = this.cserviceService.readConfessions3(this.langlist[i].lcode);
+            docRef.subscribe(data => {
+              this.confessionsList2 = data.map(e => {
+               return {
+                 id: e.payload.doc['id'],
+                 isEdit: false,
+                 clanguage: e.payload.doc.data()['clanguage'],
+                 ctitle: e.payload.doc.data()['ctitle'],
+                 cisreal: e.payload.doc.data()['cisreal'],
+                 ccategory: e.payload.doc.data()['ccategory'],
+                 ctext: e.payload.doc.data()['ctext'],
+                 cdate: e.payload.doc.data()['cdate'],
+                 curltext: e.payload.doc.data()['curltext'],
+                 curlaudio: e.payload.doc.data()['curlaudio'],
+                 converteds1: e.payload.doc.data()['converteds1'],
+                 converteds2: e.payload.doc.data()['converteds2'],
+                 };
+               });
+                 console.log("First thing to load is my list: ", this.confessionsList2.map(data => data));
+             });
+             break;
+           } else if(this.langlist[i].lcode == "en" && this.selectedlang !== undefined && this.langlist[i].lcode == this.selectedlang.lcode){
+             console.log("English code: ", this.langlist[i].lcode);
+             var docRef = this.cserviceService.readConfessions3(this.langlist[i].lcode);
+             docRef.subscribe(data => {
+               this.confessionsList2 = data.map(e => {
+                return {
+                  id: e.payload.doc['id'],
+                  isEdit: false,
+                  clanguage: e.payload.doc.data()['clanguage'],
+                  ctitle: e.payload.doc.data()['ctitle'],
+                  cisreal: e.payload.doc.data()['cisreal'],
+                  ccategory: e.payload.doc.data()['ccategory'],
+                  ctext: e.payload.doc.data()['ctext'],
+                  cdate: e.payload.doc.data()['cdate'],
+                  curltext: e.payload.doc.data()['curltext'],
+                  curlaudio: e.payload.doc.data()['curlaudio'],
+                  converteds1: e.payload.doc.data()['converteds1'],
+                  converteds2: e.payload.doc.data()['converteds2'],
+                 };
+              });
+                  console.log("First thing to load is my list: ", this.confessionsList2.map(data => data));
+             });
+             break;
+           } else if(this.langlist[i].lcode == "es" && this.selectedlang !== undefined && this.langlist[i].lcode == this.selectedlang.lcode){
+             console.log("Spanish code: ", this.langlist[i].lcode);
+             var docRef = this.cserviceService.readConfessions3(this.langlist[i].lcode);
+             docRef.subscribe(data => {
+              this.confessionsList2 = data.map(e => {
+                return {
+                  id: e.payload.doc['id'],
+                  isEdit: false,
+                  clanguage: e.payload.doc.data()['clanguage'],
+                  ctitle: e.payload.doc.data()['ctitle'],
+                  cisreal: e.payload.doc.data()['cisreal'],
+                  ccategory: e.payload.doc.data()['ccategory'],
+                  ctext: e.payload.doc.data()['ctext'],
+                  cdate: e.payload.doc.data()['cdate'],
+                  curltext: e.payload.doc.data()['curltext'],
+                  curlaudio: e.payload.doc.data()['curlaudio'],
+                  converteds1: e.payload.doc.data()['converteds1'],
+                  converteds2: e.payload.doc.data()['converteds2'],
+                  };
+               });
+                  console.log("First thing to load is my list: ", this.confessionsList2.map(data => data));
+             });
+             break;
+           } else if(this.langlist[i].lcode == "fr" && this.selectedlang !== undefined && this.langlist[i].lcode == this.selectedlang.lcode){
+             console.log("French code: ", this.langlist[i].lcode);
+             var docRef = this.cserviceService.readConfessions3(this.langlist[i].lcode);
+             docRef.subscribe(data => {
+              this.confessionsList2 = data.map(e => {
+                return {
+                  id: e.payload.doc['id'],
+                  isEdit: false,
+                  clanguage: e.payload.doc.data()['clanguage'],
+                  ctitle: e.payload.doc.data()['ctitle'],
+                  cisreal: e.payload.doc.data()['cisreal'],
+                  ccategory: e.payload.doc.data()['ccategory'],
+                  ctext: e.payload.doc.data()['ctext'],
+                  cdate: e.payload.doc.data()['cdate'],
+                  curltext: e.payload.doc.data()['curltext'],
+                  curlaudio: e.payload.doc.data()['curlaudio'],
+                  converteds1: e.payload.doc.data()['converteds1'],
+                  converteds2: e.payload.doc.data()['converteds2'],
+                  };
+              });
+                  console.log("First thing to load is my list: ", this.confessionsList2.map(data => data));
+             });
+             break;
+           } else if(this.langlist[i].lcode == "ja" && this.selectedlang !== undefined && this.langlist[i].lcode == this.selectedlang.lcode){
+             console.log("Japanese code: ", this.langlist[i].lcode);
+             var docRef = this.cserviceService.readConfessions3(this.langlist[i].lcode);
+             docRef.subscribe(data => {
+              this.confessionsList2 = data.map(e => {
+                return {
+                  id: e.payload.doc['id'],
+                  isEdit: false,
+                  clanguage: e.payload.doc.data()['clanguage'],
+                  ctitle: e.payload.doc.data()['ctitle'],
+                  cisreal: e.payload.doc.data()['cisreal'],
+                  ccategory: e.payload.doc.data()['ccategory'],
+                  ctext: e.payload.doc.data()['ctext'],
+                  cdate: e.payload.doc.data()['cdate'],
+                  curltext: e.payload.doc.data()['curltext'],
+                  curlaudio: e.payload.doc.data()['curlaudio'],
+                  converteds1: e.payload.doc.data()['converteds1'],
+                  converteds2: e.payload.doc.data()['converteds2'],
+                  };
+              });
+                  console.log("First thing to load is my list: ", this.confessionsList2.map(data => data));
+             });
+             break;
+           }
+         } // end for
+   }); // end subscribe
+}
+
+// ngonin load my confession list
+// and as the user change that list
+// I need to call that main method again with the selected new list
+callNgOninAgain(){
+  this.chooseALanguage();
 }
 
  /**
