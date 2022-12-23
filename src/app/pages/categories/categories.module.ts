@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
@@ -13,8 +13,10 @@ import { CategoriesPage } from './categories.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    CategoriesPageRoutingModule
+    CategoriesPageRoutingModule,
+    ReactiveFormsModule
   ],
-  declarations: [CategoriesPage]
+  declarations: [CategoriesPage],
+  exports: [CommonModule, FormsModule]
 })
 export class CategoriesPageModule {}

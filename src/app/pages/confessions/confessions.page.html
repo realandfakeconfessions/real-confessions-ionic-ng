@@ -23,15 +23,14 @@
   Your browser does not support the audio element.
   </audio>-->
 
-<ion-card color="primary" *ngFor="let item of confessionsList2 | paginate: { itemsPerPage: 5, currentPage: page }">
+<ion-card color="primary" *ngFor="let item of confessionsList2">
   <span *ngIf="!item.isEdit; else elseBlock">
     <ion-card-header>
       <!--<ion-card-title>{{item.id}}</ion-card-title>-->
-      <!--<ion-card-title>{{item.clanguage.lname}}</ion-card-title>-->
-      <!--<ion-card-title>{{item.clanguage.lcode}}</ion-card-title>-->
+      <!--<ion-card-title>{{item.clanguage}}</ion-card-title>-->
       <ion-card-title class="iontitlecolor">{{item.ctitle}}</ion-card-title>
       <!--<ion-card-title>{{item.cisreal}}</ion-card-title>-->
-      <!--<ion-card-title>{{item.ccategory.cname}}</ion-card-title>-->
+      <!--<ion-card-title>{{item.ccategory}}</ion-card-title>-->
       <ion-card-title>{{item.ctext}}</ion-card-title>
       <ion-card-title>{{item.cdate}}</ion-card-title>
       <!--<ion-card-title>{{item.curltext}}</ion-card-title>-->
@@ -69,7 +68,7 @@
               </ion-button>
             </ion-col>
             <ion-col>
-              <ion-button fill="solid" color="success" size="small" (click)="updateRecord(itemX)">
+              <ion-button fill="solid" color="success" size="small" (click)="updateRecord(item)">
                 Update
               </ion-button>
             </ion-col>
@@ -80,7 +79,7 @@
     <ion-card-content>
       <ion-item>
         <ion-label><strong>Language Code</strong></ion-label>
-        <ion-input type="text" [(ngModel)]="item.Editclanguage"></ion-input>
+        <ion-input type="text" [readonly]="true" [(ngModel)]="item.Editclanguage"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label><strong>Confession Title</strong></ion-label>
@@ -88,11 +87,11 @@
       </ion-item>
       <ion-item>
         <ion-label><strong>Confession Real</strong></ion-label>
-        <ion-input type="text" [(ngModel)]="item.Editcisreal"></ion-input>
+        <ion-input type="text" [readonly]="true" [(ngModel)]="item.Editcisreal"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label><strong>Confession Category</strong></ion-label>
-        <ion-input type="text" [(ngModel)]="item.Editccategory"></ion-input>
+        <ion-input type="text" [readonly]="true" [(ngModel)]="item.Editccategory"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label><strong>Confession Text</strong></ion-label>
@@ -100,29 +99,25 @@
       </ion-item>
       <ion-item>
         <ion-label><strong>Confession Date</strong></ion-label>
-        <ion-input type="text" [(ngModel)]="item.Editcdate"></ion-input>
+        <ion-input type="text" [readonly]="true" [(ngModel)]="item.Editcdate"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label><strong>Confession Text File</strong></ion-label>
-        <ion-input type="text" [(ngModel)]="item.Editcurltext"></ion-input>
+        <ion-input type="text" [readonly]="true" [(ngModel)]="item.Editcurltext"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label><strong>Confession Text Audio</strong></ion-label>
-        <ion-input type="text" [(ngModel)]="item.Editcurlaudio"></ion-input>
+        <ion-input type="text" [readonly]="true" [(ngModel)]="item.Editcurlaudio"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label><strong>Converted by Sistem 1</strong></ion-label>
-        <ion-input type="text" [(ngModel)]="item.Editconverteds1"></ion-input>
+        <ion-input type="text" [readonly]="true" [(ngModel)]="item.Editconverteds1"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label><strong>Converted by Sistem 2</strong></ion-label>
-        <ion-input type="text" [(ngModel)]="item.Editconverteds2"></ion-input>
+        <ion-input type="text" [readonly]="true" [(ngModel)]="item.Editconverteds2"></ion-input>
       </ion-item>
     </ion-card-content>
   </ng-template>
 </ion-card>
-<div class="has-text-centered">
-    <pagination-controls (pageChange)="page = $event"></pagination-controls>
-</div>
-
 </ion-content>

@@ -13,8 +13,6 @@ import { environment } from 'src/environments/environment';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 
-import {NgxPaginationModule} from 'ngx-pagination';
-
 import { LanguagesPage } from './pages/languages/languages.page';
 import { ConfessionsPage } from './pages/confessions/confessions.page';
 import { CategoriesPage } from './pages/categories/categories.page';
@@ -24,16 +22,11 @@ import { ConfessionsshowPage } from './pages/confessionsshow/confessionsshow.pag
 @NgModule({
   declarations: [
     AppComponent,
-    LanguagesPage,
-    ConfessionsPage,
-    CategoriesPage,
-    ConfessionsnewPage,
     ConfessionsshowPage,
   ],
   entryComponents: [],
   imports: [
     BrowserModule,
-    NgxPaginationModule,
     IonicModule.forRoot(),
     AppRoutingModule,
 
@@ -43,7 +36,7 @@ import { ConfessionsshowPage } from './pages/confessionsshow/confessionsshow.pag
     FormsModule
   ],
   exports: [],
-  providers: [ConfessionsPage,
+  providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })

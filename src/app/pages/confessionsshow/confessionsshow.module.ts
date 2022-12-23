@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
@@ -13,8 +13,10 @@ import { ConfessionsshowPage } from './confessionsshow.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    ConfessionsshowPageRoutingModule
+    ConfessionsshowPageRoutingModule,
+    ReactiveFormsModule
   ],
-  declarations: [ConfessionsshowPage]
+  declarations: [ConfessionsshowPage],
+  exports: [CommonModule, FormsModule]
 })
 export class ConfessionsshowPageModule {}
