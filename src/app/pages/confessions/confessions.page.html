@@ -23,7 +23,7 @@
   Your browser does not support the audio element.
   </audio>-->
 
-<ion-card color="primary" *ngFor="let item of confessionsList2">
+<ion-card color="primary" *ngFor="let item of confessionswlimit">
   <span *ngIf="!item.isEdit; else elseBlock">
     <ion-card-header>
       <!--<ion-card-title>{{item.id}}</ion-card-title>-->
@@ -34,11 +34,13 @@
       <ion-card-title>{{item.ctext}}</ion-card-title>
       <ion-card-title>{{item.cdate}}</ion-card-title>
       <!--<ion-card-title>{{item.curltext}}</ion-card-title>-->
+      <!-- audio play **webonly** begin-->
       <audio controls>
         <source src="{{item.curlaudio}}" type="audio/mpeg">
       Your browser does not support the audio element.
       <!--<ion-card-title>{{item.curlaudio}}</ion-card-title>-->
       </audio>
+      <!-- audio play **webonly** end-->
       <!--<ion-card-title>{{item.converteds1}}</ion-card-title>-->
       <!--<ion-card-title>{{item.converteds2}}</ion-card-title>-->
     </ion-card-header>
@@ -120,4 +122,7 @@
     </ion-card-content>
   </ng-template>
 </ion-card>
+<ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+<ion-infinite-scroll-content loadingText="Please wait..." loadingSpinner="bubbles"></ion-infinite-scroll-content>
+</ion-infinite-scroll>
 </ion-content>

@@ -15,6 +15,10 @@ import { ConfessionsshowPage } from '../confessionsshow/confessionsshow.page';
 import { ConfessionsInt } from './confessionsint';
 import { LanguageInt } from '../languages/languageint';
 
+interface InfiniteScrollCustomEvent extends CustomEvent {
+target: HTMLIonInfiniteScrollElement;
+}
+
 
 @Component({
   selector: 'app-confessions',
@@ -24,22 +28,20 @@ import { LanguageInt } from '../languages/languageint';
 export class ConfessionsPage implements OnInit {
 
   public languages: string;
+  mylimit: number = 2;
   apublicVar: string = "apublicVar with default value";
   cid: string = "noID";
   public static cid2: string = "tizdOZmPV9ZzCTueE3Nv";
   public selectedlang: LanguageInt;
-  public defaulseletlang: string;
+  public selectedlang2: LanguageInt;
   langlist: LanguageInt[] = [];
-  langlist2: LanguageInt[] = [];
-  conflist: ConfessionsInt[] = [];
   private colleclang = 'Languages';
 
-  confessionsList2 = [];
+  confessionswlimit: any = [];
 
-  confessionsList: ConfessionsInt[] = [];
-  langlistcodes: LanguageInt[] = [];
   private colleccon = 'Confessions';
   confessionsint: ConfessionsInt;
+  confessionsint2: any;
 
   constructor(
     private cserviceService: CserviceService,
@@ -51,7 +53,14 @@ export class ConfessionsPage implements OnInit {
   ngOnInit() {
     this.languages = this.activatedRoute.snapshot.paramMap.get('id');
     console.log("somehow I need an activateroute var, So I added: ", this.languages);
-    this.chooseALanguage();
+    if(this.selectedlang == undefined || this.selectedlang2 == undefined){
+      console.log("Selected language is undefined: ", this.selectedlang);
+      console.log("Selected language2 is undefined: ", this.selectedlang2);
+      console.log("My list is undefined or zero: ", this.confessionswlimit);
+      this.selectedlang = {lcode: "en", lname: "English", lcountry: "United States"};
+      this.selectedlang2 = this.selectedlang;
+    }
+    this.callNgOninAgain();
   }
 
  /**
@@ -125,7 +134,7 @@ findConfbyid(rowID) {
 
 /**
 * Load allowed languages.
-* The user choose a language and the confessions
+* The user chooses a language and the confessions
 * are showed in that language
 */
 chooseALanguage(){
@@ -134,134 +143,108 @@ chooseALanguage(){
          this.langlist = res;
          console.log("my lang list length: ", this.langlist.length);
          //console.log("My lang list:", this.langlist);
-         this.defaulseletlang = this.langlist[3].lcode;
-         console.log("My default language is:", this.defaulseletlang);
          for(let i = 0; i < this.langlist.length; i++){
+           var mylength: number;
            //console.log("my language code value is: ", this.langlist[i].lcode);
-           if(this.selectedlang == undefined && this.langlist[i].lcode == "en"){
-             console.log("English code: ", this.langlist[i].lcode);
-             var docRef = this.cserviceService.readConfessions3(this.langlist[i].lcode);
-            docRef.subscribe(data => {
-              this.confessionsList2 = data.map(e => {
-               return {
-                 id: e.payload.doc['id'],
-                 isEdit: false,
-                 clanguage: e.payload.doc.data()['clanguage'],
-                 ctitle: e.payload.doc.data()['ctitle'],
-                 cisreal: e.payload.doc.data()['cisreal'],
-                 ccategory: e.payload.doc.data()['ccategory'],
-                 ctext: e.payload.doc.data()['ctext'],
-                 cdate: e.payload.doc.data()['cdate'],
-                 curltext: e.payload.doc.data()['curltext'],
-                 curlaudio: e.payload.doc.data()['curlaudio'],
-                 converteds1: e.payload.doc.data()['converteds1'],
-                 converteds2: e.payload.doc.data()['converteds2'],
-                 };
-               });
-                 console.log("First thing to load is my list: ", this.confessionsList2.map(data => data));
-             });
-             break;
-           } else if(this.langlist[i].lcode == "en" && this.selectedlang !== undefined && this.langlist[i].lcode == this.selectedlang.lcode){
-             console.log("English code: ", this.langlist[i].lcode);
-             var docRef = this.cserviceService.readConfessions3(this.langlist[i].lcode);
-             docRef.subscribe(data => {
-               this.confessionsList2 = data.map(e => {
-                return {
-                  id: e.payload.doc['id'],
-                  isEdit: false,
-                  clanguage: e.payload.doc.data()['clanguage'],
-                  ctitle: e.payload.doc.data()['ctitle'],
-                  cisreal: e.payload.doc.data()['cisreal'],
-                  ccategory: e.payload.doc.data()['ccategory'],
-                  ctext: e.payload.doc.data()['ctext'],
-                  cdate: e.payload.doc.data()['cdate'],
-                  curltext: e.payload.doc.data()['curltext'],
-                  curlaudio: e.payload.doc.data()['curlaudio'],
-                  converteds1: e.payload.doc.data()['converteds1'],
-                  converteds2: e.payload.doc.data()['converteds2'],
-                 };
-              });
-                  console.log("First thing to load is my list: ", this.confessionsList2.map(data => data));
-             });
-             break;
-           } else if(this.langlist[i].lcode == "es" && this.selectedlang !== undefined && this.langlist[i].lcode == this.selectedlang.lcode){
-             console.log("Spanish code: ", this.langlist[i].lcode);
-             var docRef = this.cserviceService.readConfessions3(this.langlist[i].lcode);
-             docRef.subscribe(data => {
-              this.confessionsList2 = data.map(e => {
-                return {
-                  id: e.payload.doc['id'],
-                  isEdit: false,
-                  clanguage: e.payload.doc.data()['clanguage'],
-                  ctitle: e.payload.doc.data()['ctitle'],
-                  cisreal: e.payload.doc.data()['cisreal'],
-                  ccategory: e.payload.doc.data()['ccategory'],
-                  ctext: e.payload.doc.data()['ctext'],
-                  cdate: e.payload.doc.data()['cdate'],
-                  curltext: e.payload.doc.data()['curltext'],
-                  curlaudio: e.payload.doc.data()['curlaudio'],
-                  converteds1: e.payload.doc.data()['converteds1'],
-                  converteds2: e.payload.doc.data()['converteds2'],
-                  };
-               });
-                  console.log("First thing to load is my list: ", this.confessionsList2.map(data => data));
-             });
-             break;
-           } else if(this.langlist[i].lcode == "fr" && this.selectedlang !== undefined && this.langlist[i].lcode == this.selectedlang.lcode){
-             console.log("French code: ", this.langlist[i].lcode);
-             var docRef = this.cserviceService.readConfessions3(this.langlist[i].lcode);
-             docRef.subscribe(data => {
-              this.confessionsList2 = data.map(e => {
-                return {
-                  id: e.payload.doc['id'],
-                  isEdit: false,
-                  clanguage: e.payload.doc.data()['clanguage'],
-                  ctitle: e.payload.doc.data()['ctitle'],
-                  cisreal: e.payload.doc.data()['cisreal'],
-                  ccategory: e.payload.doc.data()['ccategory'],
-                  ctext: e.payload.doc.data()['ctext'],
-                  cdate: e.payload.doc.data()['cdate'],
-                  curltext: e.payload.doc.data()['curltext'],
-                  curlaudio: e.payload.doc.data()['curlaudio'],
-                  converteds1: e.payload.doc.data()['converteds1'],
-                  converteds2: e.payload.doc.data()['converteds2'],
-                  };
-              });
-                  console.log("First thing to load is my list: ", this.confessionsList2.map(data => data));
-             });
-             break;
-           } else if(this.langlist[i].lcode == "ja" && this.selectedlang !== undefined && this.langlist[i].lcode == this.selectedlang.lcode){
-             console.log("Japanese code: ", this.langlist[i].lcode);
-             var docRef = this.cserviceService.readConfessions3(this.langlist[i].lcode);
-             docRef.subscribe(data => {
-              this.confessionsList2 = data.map(e => {
-                return {
-                  id: e.payload.doc['id'],
-                  isEdit: false,
-                  clanguage: e.payload.doc.data()['clanguage'],
-                  ctitle: e.payload.doc.data()['ctitle'],
-                  cisreal: e.payload.doc.data()['cisreal'],
-                  ccategory: e.payload.doc.data()['ccategory'],
-                  ctext: e.payload.doc.data()['ctext'],
-                  cdate: e.payload.doc.data()['cdate'],
-                  curltext: e.payload.doc.data()['curltext'],
-                  curlaudio: e.payload.doc.data()['curlaudio'],
-                  converteds1: e.payload.doc.data()['converteds1'],
-                  converteds2: e.payload.doc.data()['converteds2'],
-                  };
-              });
-                  console.log("First thing to load is my list: ", this.confessionsList2.map(data => data));
-             });
-             break;
+           if(this.langlist[i].lcode == this.selectedlang.lcode
+             && this.langlist[i].lcode == "en"
+             && this.selectedlang.lcode == "en"
+             && this.selectedlang.lcode == this.selectedlang2.lcode
+             && this.selectedlang2.lcode == "en"){
+               console.log("Array length at beginning en: ", this.confessionswlimit.length);
+               console.log("English code selected: ", this.selectedlang);
+               if(this.confessionsint2 != undefined && this.confessionsint2.clanguage != "en" && this.confessionswlimit.length == 0){
+                 console.log("English code selected changed: ", this.confessionsint2.clanguage);
+                 this.confessionswlimit.length = 0;
+               }
+               this.confessionswlimit = this.cserviceService.getRecordsLimit(this.selectedlang.lcode, this.mylimit);
+               console.log("First thing to load is my list: en", this.confessionswlimit);
+               console.log("Array length at ending en: ", this.confessionswlimit.length);
+               break;
+           } else if(this.langlist[i].lcode == this.selectedlang.lcode
+             && this.langlist[i].lcode == "es"
+             && this.selectedlang.lcode == "es"
+             && this.selectedlang.lcode == this.selectedlang2.lcode
+             && this.selectedlang2.lcode == "es"){
+               console.log("Array length at beginning es: ", this.confessionswlimit.length);
+               console.log("Spanish code selected: ", this.selectedlang);
+               if(this.confessionsint2.clanguage != "es" && this.confessionswlimit.length == 0){
+                 console.log("Spanish code selected changed: ", this.confessionsint2.clanguage);
+                 this.confessionswlimit.length = 0;
+               }
+               this.confessionswlimit = this.cserviceService.getRecordsLimit(this.selectedlang.lcode, this.mylimit);
+               console.log("First thing to load is my list: es", this.confessionswlimit);
+               console.log("Array length at ending es: ", this.confessionswlimit.length);
+               break;
+           } else if(this.langlist[i].lcode == this.selectedlang.lcode
+             && this.langlist[i].lcode == "fr"
+             && this.selectedlang.lcode == "fr"
+             && this.selectedlang.lcode == this.selectedlang2.lcode
+             && this.selectedlang2.lcode == "fr"){
+               console.log("Array length at beginning fr: ", this.confessionswlimit.length);
+               console.log("French code selected: ", this.selectedlang.lcode);
+               if(this.confessionsint2.clanguage != "fr" && this.confessionswlimit.length == 0){
+                 console.log("French code selected changed: ", this.confessionsint2.clanguage);
+                 this.confessionswlimit.length = 0;
+               }
+               this.confessionswlimit = this.cserviceService.getRecordsLimit(this.selectedlang.lcode, this.mylimit);
+               console.log("First thing to load is my list: fr", this.confessionswlimit);
+               console.log("Array length at ending fr: ", this.confessionswlimit.length);
+               break;
+           } else if(this.langlist[i].lcode == this.selectedlang.lcode
+             && this.langlist[i].lcode == "ja"
+             && this.selectedlang.lcode == "ja"
+             && this.selectedlang.lcode == this.selectedlang2.lcode
+             && this.selectedlang2.lcode == "ja"){
+               console.log("Array length at beginning ja: ", this.confessionswlimit.length);
+               console.log("Japanese code selected: ", this.selectedlang.lcode);
+               if(this.confessionsint2.clanguage != "ja" && this.confessionswlimit.length == 0){
+                 console.log("Japanese code selected changed: ", this.confessionsint2.clanguage);
+                 this.confessionswlimit.length = 0;
+               }
+               this.confessionswlimit = this.cserviceService.getRecordsLimit(this.selectedlang.lcode, this.mylimit);
+               console.log("First thing to load is my list: ja", this.confessionswlimit);
+               console.log("Array length at ending ja: ", this.confessionswlimit.length);
+               break;
            }
          } // end for
    }); // end subscribe
 }
 
-// ngonin load my confession list
+// call ionic infinite scroll
+onIonInfinite(ev) {
+  console.log("Method onIonInfinite(ev): started");
+  if(this.selectedlang != undefined && this.selectedlang2 != undefined
+    && this.selectedlang.lcode != this.selectedlang2.lcode){
+    console.log("Selectedlang has changed: 2", this.selectedlang);
+    console.log("Selectedlang2 has changed: 2", this.selectedlang2);
+    this.selectedlang2 = this.selectedlang;
+    console.log("My list length is: ", this.confessionswlimit.length);
+    this.confessionswlimit.length = 0;
+  }
+  this.chooseALanguage();
+  setTimeout(() => {
+    (ev as InfiniteScrollCustomEvent).target.complete();
+  }, 500);
+}
+
+// ngonin loads my confession list
 // and as the user change that list
 // I need to call that main method again with the selected new list
 callNgOninAgain(){
+  console.log("Method callNgOninAgain(): started");
+  if(this.confessionswlimit.length > 0){
+    this.confessionsint2 = this.confessionswlimit[this.confessionswlimit.length - 1];
+    console.log("Last row is: ", this.confessionsint2);
+  }
+  if(this.selectedlang != undefined && this.selectedlang2 != undefined
+    && this.selectedlang.lcode != this.selectedlang2.lcode){
+    console.log("Selectedlang has changed: 1", this.selectedlang);
+    console.log("Selectedlang2 has changed: 1", this.selectedlang2);
+    this.selectedlang2 = this.selectedlang;
+    console.log("My list length is: ", this.confessionswlimit.length);
+    this.confessionswlimit.length = 0
+  }
   this.chooseALanguage();
 }
 
