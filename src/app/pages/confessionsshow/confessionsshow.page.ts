@@ -29,7 +29,6 @@ export class ConfessionsshowPage implements OnInit {
 
   constructor(
     private cserviceService: CserviceService,
-    private confess: ConfessionsPage,
     private route: ActivatedRoute,
     private modalCtrl: ModalController) {
   }

@@ -70,8 +70,8 @@ export class CserviceService {
         console.log("Docs 1st length: ", snap.docs.length);
 
         if(this.mylength1 > 0){
+          console.log("first query: ", this.mylength1);
           snap.forEach((doc: any) => {
-            console.log("first query: ", this.mylength1);
             //console.log(doc.id, " => ", doc.data());
             this.confessionswlimit.push({
               id: doc.id,
@@ -106,8 +106,8 @@ export class CserviceService {
           var mylength2 = snap.docs.length;
           console.log("Docs next length: ", snap.docs.length);
           if(mylength2 > 0){
+            console.log("next query: ", mylength2);
             snap.forEach((doc: any) => {
-              console.log("next query: ", mylength2);
               //console.log(doc.id, " => ", doc.data());
               this.confessionswlimit.push({
                 id: doc.id,
@@ -154,23 +154,6 @@ export class CserviceService {
 
   deleteConfessions(id){
     this.firestore.doc(this.collectionName + '/' + id).delete();
-  }
-
-  findConfessionbyId(id){
-    //this.firestore.collection(this.collectionName).snapshotChanges(id);
-    var docRef = this.firestore.collection(this.collectionName).doc(id);
-
-    docRef.get().toPromise().then((doc) => {
-        if (doc.exists) {
-            console.log("Document data:", doc.data());
-        } else {
-            // doc.data() will be undefined in this case
-            console.log("No such document!");
-        }
-    }).catch((error) => {
-        console.log("Error getting document:", error);
-    });
-
   }
 
   /**

@@ -17,8 +17,7 @@ export class LanguagesPage implements OnInit {
 
   constructor(
    private lserviceService: LserviceService,
-   public fb: FormBuilder
- ) {
+   public fb: FormBuilder) {
    this.languageData = {} as LanguageInt;
  }
 
@@ -28,7 +27,11 @@ export class LanguagesPage implements OnInit {
      lcode: ['', [Validators.required]],
      lname: ['', [Validators.required]],
      lcountry: ['', [Validators.required]]
-   })
+   });
+   this.loadLangList();
+ }
+
+ loadLangList(){
 
    this.lserviceService.readLanguage().subscribe(data => {
 

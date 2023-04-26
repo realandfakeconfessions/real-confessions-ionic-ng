@@ -3,27 +3,27 @@
     <ion-buttons slot="start">
       <ion-menu-button color="dark"></ion-menu-button>
     </ion-buttons>
-    <ion-title>Categories Page</ion-title>
+    <ion-title>Profiles Page</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="false" class="ion-padding">
-<h1>Categories Page</h1>
+<h1>Profiles Page</h1>
 
-<form [formGroup]="categoryForm" (ngSubmit)="createRecord()">
+<form [formGroup]="profileForm" (ngSubmit)="createRecord()">
 
   <ion-item>
-    <ion-label position="floating">Category Name</ion-label>
-    <ion-input formControlName="cname"></ion-input>
+    <ion-label position="floating">Profile Name</ion-label>
+    <ion-input formControlName="pname"></ion-input>
   </ion-item>
 
   <ion-item>
-    <ion-label position="floating">Category Description</ion-label>
-    <ion-input formControlName="cdescription"></ion-input>
+    <ion-label position="floating">Profile Description</ion-label>
+    <ion-input formControlName="pdesc"></ion-input>
   </ion-item>
 
   <ion-item>
-    <ion-button (click)="createRecord()"  [disabled]="categoryForm.invalid">
+    <ion-button (click)="createRecord()"  [disabled]="profileForm.invalid">
       <ion-icon size="small" slot="icon-only" name="add"></ion-icon>
       &nbsp;Create Record
     </ion-button>
@@ -31,12 +31,12 @@
 
 </form>
 
-  <ion-card *ngFor="let item of categoryList" color="primary">
+  <ion-card *ngFor="let item of profileList" color="primary">
     <span *ngIf="!item.isEdit; else elseBlock">
       <ion-card-header>
-        <!--<ion-card-title>{{item.id}}</ion-card-title>-->
-        <ion-card-title>{{item.cname}}</ion-card-title>
-        <ion-card-title>{{item.cdescription}}</ion-card-title>
+        <ion-card-title>{{item.id}}</ion-card-title>
+        <ion-card-title>{{item.pname}}</ion-card-title>
+        <ion-card-title>{{item.pdesc}}</ion-card-title>
       </ion-card-header>
       <ion-card-content>
 
@@ -73,13 +73,13 @@
         </ion-card-title>
       </ion-card-header>
       <ion-card-content>
-       <ion-item>
-          <ion-label><strong>Category Name</strong></ion-label>
-          <ion-input type="text" [readonly]="true" [(ngModel)]="item.Editcname"></ion-input>
+        <ion-item>
+          <ion-label><strong>Profile Name</strong></ion-label>
+          <ion-input type="text" [readonly]="true" [(ngModel)]="item.Editpname"></ion-input>
         </ion-item>
         <ion-item>
-          <ion-label><strong>Category Description</strong></ion-label>
-          <ion-input type="text" [(ngModel)]="item.Editcdescription"></ion-input>
+          <ion-label><strong>Profile Description</strong></ion-label>
+          <ion-input type="text" [(ngModel)]="item.Editpdesc"></ion-input>
         </ion-item>
       </ion-card-content>
     </ng-template>

@@ -26,6 +26,14 @@ const routes: Routes = [
       {
         path: 'categories',
         loadChildren: () => import('../categories/categories.module').then( m => m.CategoriesPageModule)
+      },
+      {
+        path: 'profiles',
+        loadChildren: () => import('../profile/profile.module').then( m => m.ProfilePageModule)
+      },
+      {
+        path: 'roles',
+        loadChildren: () => import('../roles/roles.module').then( m => m.RolesPageModule)
       }
     ]
   }

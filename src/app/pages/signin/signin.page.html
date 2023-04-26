@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Register Page</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="dark" fill="solid" (click)="dismissModal2()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <h1>Register your credentials!</h1>
+  <form [formGroup]="signupForm" (ngSubmit)="signupUser2()">
+  <ion-item>
+    <ion-label position="floating">Nickname:</ion-label>
+    <ion-input formControlName="ualias"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Email:</ion-label>
+    <ion-input formControlName="uemail"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Password:</ion-label>
+    <ion-input type="password" formControlName="upass"></ion-input>
+  </ion-item>
+  <ion-list>
+   <ion-item>
+    <ion-select formControlName="urolecod" aria-label="Profile" interface="popover" placeholder="Select profile">
+      <ion-select-option value="standar">Standar</ion-select-option>
+      <ion-select-option value="moderator">Moderator</ion-select-option>
+    </ion-select>
+   </ion-item>
+   </ion-list>
+  <ion-item>
+    <ion-button (click)="signupUser2()" [disabled]="signupForm.invalid">
+      <ion-icon size="small" slot="icon-only" name="person-outline"></ion-icon>
+      Register
+    </ion-button>
+  </ion-item>
+  </form>
+</ion-content>

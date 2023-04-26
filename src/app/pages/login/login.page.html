@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Login Page</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="dark" fill="solid" (click)="dismissModal2()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="loginForm" (ngSubmit)="login()">
+  <h1>Login your credentials!</h1>
+  <ion-item>
+    <ion-label position="floating">Email:</ion-label>
+    <ion-input formControlName="uemail"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Password:</ion-label>
+    <ion-input type="password" formControlName="upass"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-button (click)="login()"  [disabled]="loginForm.invalid">
+      <ion-icon size="small" slot="icon-only"></ion-icon>
+      Login
+    </ion-button>
+  </ion-item>
+  </form>
+  <ion-item>
+    <h3>New user!</h3>
+    <ion-button color="primary" fill="solid" (click)="openCardModal3()">
+      <ion-icon size="small" slot="icon-only" name="add-outline"></ion-icon>
+      Register
+    </ion-button>
+  </ion-item>
+</ion-content>

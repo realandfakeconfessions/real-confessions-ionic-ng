@@ -3,6 +3,7 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { formatDate } from '@angular/common';
 import { ModalController } from '@ionic/angular'
+import { Router } from '@angular/router';
 import { LserviceService } from '../languages/lservice.service';
 import { CategoriesPage } from '../categories/categories.page';
 import { CaserviceService } from '../categories/caservice.service';
@@ -40,6 +41,7 @@ export class ConfessionsnewPage implements OnInit {
     private cserviceService: CserviceService,
     public fb: FormBuilder,
     public fb2: FormBuilder,
+    private router: Router,
     @Inject(LOCALE_ID) private locale: string) {
       this.dateString = formatDate(Date.now(),'dd-MM-yyyy_HH:m:s',this.locale);
       this.urlfilename = this.dateString;
@@ -108,16 +110,19 @@ export class ConfessionsnewPage implements OnInit {
 
       this.cserviceService.createConfessions(this.confessionsForm2.value)
         .then(resp => {
+          if(resp){
+            this.router.navigateByUrl('/menu/confessions');
+          }
           this.confessionsForm.reset();
           this.dismissModal();
         })
         .catch(error => {
           console.log(error);
         });
-        console.log(this.confessionsForm.value);
-        console.log(this.confessionsForm2.value);
-        console.log(this.confessionsForm2.value.ctitle);
-        console.log(this.confessionsForm2.value.ctext);
+        //console.log(this.confessionsForm.value);
+        //console.log(this.confessionsForm2.value);
+        //console.log(this.confessionsForm2.value.ctitle);
+        //console.log(this.confessionsForm2.value.ctext);
    }
 
    /**

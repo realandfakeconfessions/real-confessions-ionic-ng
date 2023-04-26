@@ -22,6 +22,26 @@ const routes: Routes = [
   {
     path: 'confessionsshow',
     loadChildren: () => import('./pages/confessionsshow/confessionsshow.module').then( m => m.ConfessionsshowPageModule)
+  },
+  {
+    path: 'login',
+    loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
+  },
+  {
+    path: 'signin',
+    loadChildren: () => import('./pages/signin/signin.module').then( m => m.SigninPageModule)
+  },
+  {
+    path: 'comments',
+    loadChildren: () => import('./pages/comments/comments.module').then( m => m.CommentsPageModule)
+  },
+  {
+    path: 'profile',
+    loadChildren: () => import('./pages/profile/profile.module').then( m => m.ProfilePageModule)
+  },
+  {
+    path: 'roles',
+    loadChildren: () => import('./pages/roles/roles.module').then( m => m.RolesPageModule)
   }
 ];
 

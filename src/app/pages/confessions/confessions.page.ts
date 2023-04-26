@@ -9,8 +9,8 @@ import { formatDate } from '@angular/common';
 import { ModalController } from '@ionic/angular';
 
 import { CserviceService } from './cservice.service';
-import { ConfessionsnewPage } from '../confessionsnew/confessionsnew.page';
 import { ConfessionsshowPage } from '../confessionsshow/confessionsshow.page';
+import { LoginPage } from '../login/login.page';
 
 import { ConfessionsInt } from './confessionsint';
 import { LanguageInt } from '../languages/languageint';
@@ -28,7 +28,7 @@ target: HTMLIonInfiniteScrollElement;
 export class ConfessionsPage implements OnInit {
 
   public languages: string;
-  mylimit: number = 2;
+  mylimit: number = 3;
   apublicVar: string = "apublicVar with default value";
   cid: string = "noID";
   public static cid2: string = "tizdOZmPV9ZzCTueE3Nv";
@@ -61,6 +61,7 @@ export class ConfessionsPage implements OnInit {
       this.selectedlang2 = this.selectedlang;
     }
     this.callNgOninAgain();
+    console.log("User loged in sessionstorage 4: ", sessionStorage.getItem("userDetails"));
   }
 
  /**
@@ -131,6 +132,7 @@ findConfbyid(rowID) {
 
   this.openCardModal2();
 }
+
 
 /**
 * Load allowed languages.
@@ -247,20 +249,6 @@ callNgOninAgain(){
   }
   this.chooseALanguage();
 }
-
- /**
- * My modal function, create a confession, call confessionsnew
- */
- async openCardModal(){
-   console.log("my click event for my modal is working. Open new confession");
-
-   const modal = await this.modalCtrl.create({
-     component: ConfessionsnewPage
-   });
-
-   await modal.present();
-
- }
 
  /**
  * My modal function, open confession in another page, call confessionsshow
