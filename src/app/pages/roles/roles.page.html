@@ -9,14 +9,31 @@
 
 <ion-content>
   <h1>Your user Details!</h1>
-  <ion-card color="primary">
-    <ion-card-header>
-      <ion-card-title>{{usersInt3.uid}}</ion-card-title>
-      <ion-card-title>{{usersInt3.urolecod}}</ion-card-title>
-      <ion-card-title>{{usersInt3.uemail}}</ion-card-title>
-      <ion-card-title>{{usersInt3.ualias}}</ion-card-title>
-      <ion-card-title>{{usersInt3.uregdate}}</ion-card-title>
-      <ion-card-title>{{usersInt3.ucountry}}</ion-card-title>
-    </ion-card-header>
+    <ion-card color="primary" *ngFor="let item of confessionslst">
+        <ion-card-header>
+          <ion-card-title>{{item.id}}</ion-card-title>
+          <ion-card-title>{{item.clanguage}}</ion-card-title>
+          <ion-card-title>{{item.ctitle}}</ion-card-title>
+          <ion-card-title>{{item.cisreal}}</ion-card-title>
+          <ion-card-title>{{item.ccategory}}</ion-card-title>
+          <ion-card-title>{{item.ctext}}</ion-card-title>
+          <ion-card-title>{{item.cdate}}</ion-card-title>
+          <ion-card-title>{{item.curltext}}</ion-card-title>
+          <ion-card-title>{{item.curlaudio}}</ion-card-title>          
+          <ion-card-title>{{item.converteds1}}</ion-card-title>
+          <ion-card-title>{{item.converteds2}}</ion-card-title>
+          <ion-card-title>{{item.cuid}}</ion-card-title>
+        </ion-card-header>
+  </ion-card>
+  <hr>
+  <ion-card color="success">
+  <ion-card-header>
+    <ion-card-title>{{usersInt3.uid}}</ion-card-title>
+    <ion-card-title>{{usersInt3.urolecod}}</ion-card-title>
+    <ion-card-title>{{usersInt3.uemail}}</ion-card-title>
+    <ion-card-title>{{usersInt3.ualias}}</ion-card-title>
+    <ion-card-title>{{usersInt3.uregdate}}</ion-card-title>
+    <ion-card-title>{{usersInt3.ucountry}}</ion-card-title>
+  </ion-card-header>
   </ion-card>
 </ion-content>

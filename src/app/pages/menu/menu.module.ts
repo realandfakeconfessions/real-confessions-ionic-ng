@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { MenuPageRoutingModule } from './menu-routing.module';
 
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AngularFireAuthGuard} from '@angular/fire/compat/auth-guard';
 
 import { MenuPage } from './menu.page';
 
@@ -21,19 +22,23 @@ const routes: Routes = [
       },
       {
         path: 'languages',
-        loadChildren: () => import('../languages/languages.module').then( m => m.LanguagesPageModule)
+        loadChildren: () => import('../languages/languages.module').then( m => m.LanguagesPageModule),
+        canActivate: [AngularFireAuthGuard]
       },
       {
         path: 'categories',
-        loadChildren: () => import('../categories/categories.module').then( m => m.CategoriesPageModule)
+        loadChildren: () => import('../categories/categories.module').then( m => m.CategoriesPageModule),
+        canActivate: [AngularFireAuthGuard]
       },
       {
         path: 'profiles',
-        loadChildren: () => import('../profile/profile.module').then( m => m.ProfilePageModule)
+        loadChildren: () => import('../profile/profile.module').then( m => m.ProfilePageModule),
+        canActivate: [AngularFireAuthGuard]
       },
       {
         path: 'roles',
-        loadChildren: () => import('../roles/roles.module').then( m => m.RolesPageModule)
+        loadChildren: () => import('../roles/roles.module').then( m => m.RolesPageModule),
+        canActivate: [AngularFireAuthGuard]
       }
     ]
   }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from "@angular/fire/compat/auth";
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Router } from '@angular/router';
 import { HttpClient  } from '@angular/common/http';
 import { UsersInt } from '../signin/usersint';
 
@@ -12,6 +13,7 @@ export class LoginauthService {
   collectionName = 'Users';
   collectionName2 = 'Profiles';
   collectionName3 = 'Countries';
+  collectionName4 = 'Confessions';
   myuserloged: any;
   myuserloged2: UsersInt;
 
@@ -19,6 +21,7 @@ export class LoginauthService {
 
   constructor(private firestore: AngularFirestore,
     private http: HttpClient,
+    private router: Router,
     private fireauth: AngularFireAuth) {
       this.myuserloged2 = {} as UsersInt;
     }
@@ -75,6 +78,14 @@ export class LoginauthService {
 
   readProfile(){
     return this.firestore.collection(this.collectionName2).snapshotChanges();
+  }
+
+  readUserConfessions(userlogedid: string){
+    var docRef =  this.firestore.collection(this.collectionName4, ref => ref
+      .where("cuid", "==", userlogedid)
+      .orderBy("cdate", "desc"))
+      .snapshotChanges();
+    return docRef;
   }
 
   createProfile(profile){

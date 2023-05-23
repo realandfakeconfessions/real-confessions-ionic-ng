@@ -18,7 +18,6 @@ export class LoginPage implements OnInit {
   loginData2: UsersInt;
   loginForm!: FormGroup;
   myuserloged2: any;
-  public static userAlias: string = "I set it undefined";
 
   constructor(
     private modalCtrl: ModalController,
@@ -34,11 +33,7 @@ export class LoginPage implements OnInit {
       uemail: ['', [Validators.required]],
       upass: ['', [Validators.required]]
     });
-
-    if(this.loginData == undefined || this.loginData == null
-      || this.loginForm.value.uemail == "" || this.loginForm.value.upass == ""){
-      this.getUserInfo();
-    }
+    //this.loginUserState2();
   }
 
   /**
@@ -68,31 +63,35 @@ export class LoginPage implements OnInit {
         console.log(error);
         this.showmess.presentToast("The user or password is wrong!");
       });
+
+  }
+
+  refreshBrowser(){
+    this.router.navigateByUrl('/menu/roles');
+    //I need to refresh the browser to see changes in the menu
+    //location.reload();
   }
 
   emptyAnInterface(){
     this.loginData = {uid: "", uemail: "", upass: "", ualias: "", ucountry: "", uregpip: "", uregdate: "", urolecod: ""};
     this.loginData2 = {uid: "", uemail: "", upass: "", ualias: "", ucountry: "", uregpip: "", uregdate: "", urolecod: ""};
+    sessionStorage.removeItem("userDetails");
+    sessionStorage.clear();
+    this.router.navigateByUrl('/menu/confessions');
   }
-
-  findDocById(id: string){
-    //const id = "AEf2sFPYtCdrZnmVwZNCKabLcFB3"
-    console.log("Method findDocById() started: ", id);
-    //this.myuserloged2 = this.myloginser.findDocuById(id);
-  }
-
-  findDocById2(){
-    const id = "AEf2sFPYtCdrZnmVwZNCKabLcFB3"
-    console.log("Method findDocById() started: ", id);
-    this.loginData2 = this.myloginser.findDocuById(id);
-    console.log("user data is: ", this.loginData2);
-  }
-
 
   loginUserState2(){
     this.myloginser.userState().subscribe( res => {
       if(res){
-        console.log("User loged in from login.page, check userState", res);
+        console.log("response in loginUserState2(): ", res);
+        const path = "Users";
+        const myuid2 = res.uid;
+
+        if(myuid2 != null || myuid2 != ""){
+          this.getUserInfo2(path, myuid2);
+        }
+      } else {
+        console.log("user no loged in");
       }
     });
   }
@@ -118,25 +117,18 @@ export class LoginPage implements OnInit {
         this.loginData = res;
         //console.log("user data is: ", this.loginData);
         sessionStorage.setItem('userDetails', JSON.stringify(this.loginData));
-        console.log("User loged in sessionstorage 1: ", sessionStorage.getItem("userDetails"));
+        //console.log("User loged in login page: ", sessionStorage.getItem("userDetails"));
         this.loginData2 = JSON.parse(sessionStorage.getItem("userDetails")) as UsersInt;
         console.log("user data is: ", this.loginData2);
       }
     });
   }
 
-  refreshBrowserOnce(){
-    if(this.loginForm.value.uemail != "" && this.loginForm.value.upass != ""){
-      console.log("The loginForm group has something: ", this.loginForm);
-      // a refresh action simulation for the browser
-      location.reload();
-    }
-  }
-
   /**
   * Close my modal window, confession login
   */
   dismissModal2(){
+    sessionStorage.clear();
     console.log("my click event for my modal is working. Close confession login");
     this.modalCtrl.dismiss();
   }

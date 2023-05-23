@@ -10,6 +10,7 @@ import { CaserviceService } from '../categories/caservice.service';
 import { CserviceService } from '../confessions/cservice.service';
 import { LanguageInt } from '../languages/languageint';
 import { ConfessionsInt } from '../confessions/confessionsint';
+import { UsersInt } from '../signin/usersint';
 
 @Component({
   selector: 'app-confessionsnew',
@@ -32,7 +33,7 @@ export class ConfessionsnewPage implements OnInit {
   confessionsForm: FormGroup;
   confessionsForm2: FormGroup;
 
-  confessionsData: ConfessionsInt;
+  userInfo: UsersInt;
 
   constructor(
     private modalCtrl: ModalController,
@@ -45,6 +46,7 @@ export class ConfessionsnewPage implements OnInit {
     @Inject(LOCALE_ID) private locale: string) {
       this.dateString = formatDate(Date.now(),'dd-MM-yyyy_HH:m:s',this.locale);
       this.urlfilename = this.dateString;
+      this.userInfo = {} as UsersInt;
    }
 
   ngOnInit() {
@@ -85,6 +87,13 @@ export class ConfessionsnewPage implements OnInit {
       })
 
     });
+    this.isUserLoged();
+  }
+
+  isUserLoged(){
+    console.log("User loged in confessions new: ", sessionStorage.getItem("userDetails"));
+    this.userInfo = JSON.parse(sessionStorage.getItem("userDetails")) as UsersInt;
+    console.log("user data in confession page is: ", this.userInfo);
   }
 
 
@@ -106,6 +115,7 @@ export class ConfessionsnewPage implements OnInit {
            this.confessionsForm.value.ccategory.cname, "-", this.urlfilename, this.audioextension)],
         converteds1: ["false"],
         converteds2: ["false"],
+        cuid: [this.userInfo.uid]
       })
 
       this.cserviceService.createConfessions(this.confessionsForm2.value)

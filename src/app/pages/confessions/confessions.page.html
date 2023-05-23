@@ -39,10 +39,10 @@
       <ion-button shape="round" color="secondary" size="small" (click)="findConfbyid(item.id)">Show
         <ion-icon size="small" slot="icon-only" name="add-circle-outline"></ion-icon>
       </ion-button>
-      <ion-button shape="round" color="secondary" size="small" (click)="editRecord(item)">Edit
+      <ion-button *ngIf="varucedit"  shape="round" color="secondary" size="small" (click)="editRecord(item)">Edit
         <ion-icon size="small" slot="icon-only" name="create"></ion-icon>
       </ion-button>
-      <ion-button shape="round" color="danger" size="small" (click)="removeRecord(item.id)">Del
+      <ion-button *ngIf="varucedit" shape="round" color="danger" size="small" (click)="removeRecord(item.id)">Del
         <ion-icon size="small" slot="icon-only" name="trash"></ion-icon>
       </ion-button>
     </ion-card-content>
@@ -109,6 +109,10 @@
       <ion-item>
         <ion-label><strong>Converted by Sistem 2</strong></ion-label>
         <ion-input type="text" [readonly]="true" [(ngModel)]="item.Editconverteds2"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label><strong>Confession Owner</strong></ion-label>
+        <ion-input type="text" [readonly]="true" [(ngModel)]="item.Editcuid"></ion-input>
       </ion-item>
     </ion-card-content>
   </ng-template>

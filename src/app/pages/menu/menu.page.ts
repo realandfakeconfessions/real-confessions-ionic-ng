@@ -18,10 +18,8 @@ export class MenuPage implements OnInit {
   varadmin: boolean = false;
   addcbutton: boolean = false;
   userlogedrole: boolean = false;
-  userid: string;
+  useralias: string;
   useradmin: string;
-  userprofile: string = "admin";
-  usersInt: UsersInt;
   usersInt1: UsersInt;
   usersInt2: UsersInt;
 
@@ -54,7 +52,7 @@ export class MenuPage implements OnInit {
     private modalCtrl: ModalController,
     private router: Router) { //begin constructor
 
-      this.usersInt = {} as UsersInt;
+      this.usersInt1 = {} as UsersInt;
 
     } //end constructor
 
@@ -65,83 +63,69 @@ export class MenuPage implements OnInit {
   loginUserState(){
     this.myloginser.userState().subscribe( res => {
       if(res){
-        console.log("User loged in", res);
-
         const path = "Users";
-        this.userid = res.uid;
-        if(this.userid != null || this.userid != ""){
-          this.getUserInfo3(path, this.userid);
-        }
-
-        console.log("User loged in sessionstorage menu page: ", sessionStorage.getItem("userDetails"));
-        this.usersInt2 = JSON.parse(sessionStorage.getItem("userDetails")) as UsersInt;
-        console.log("User details not undefined: ", this.usersInt2);
-        //console.log("User ualias not undefined: ", this.usersInt2.ualias);
-        //this.userid = res.uid;
-        console.log("User loged in id is: ", this.userid);
-        this.varlogin = true;
-        this.addcbutton = true;
-        this.userlogedrole = true;
-        if(this.usersInt2.urolecod == "admin"){
-          this.varadmin = true;
-        } else {
-          this.varadmin = false;
-        }
+        const myuid3 = res.uid;
+        console.log("User loged in loginUserState()", myuid3);
+        this.getUserInfo2(path, myuid3);
       } else {
-        console.log("User loged out");
-        this.varlogin = false;
-        this.varadmin = false;
-        this.userlogedrole = false;
-        this.emptyAnInterface2();
+        console.log("No User loged in yet loginUserState()");
       }
     });
   }
 
-  refreshBrowserOnce(){
-    // a refresh action simulation for the browser
-    location.reload();
-  }
-
-  getUserInfo3(path: string, id: string){
-
+  getUserInfo2(path: string, id: string){
+    console.log("method getUserInfo2(): started");
+    //this.emptyAnInterface2();
     this.myloginser.getUserById2<UsersInt>(path, id).subscribe( res => {
       if (res) {
         this.usersInt1 = res;
+        //console.log("user data is: ", this.loginData);
+        this.useralias = this.usersInt1.ualias;
         this.useradmin = this.usersInt1.urolecod;
-        sessionStorage.setItem('userDetails', JSON.stringify(this.usersInt1));
-        console.log("User loged in sessionstorage 1: ", sessionStorage.getItem("userDetails"));
-        this.usersInt2 = JSON.parse(sessionStorage.getItem("userDetails")) as UsersInt;
-        console.log("user data is: ", this.usersInt2);
+        //console.log("admin var 1 is: ", this.useradmin);
+        //sessionStorage.setItem('userDetails', JSON.stringify(this.usersInt1));
+        //console.log("User loged in menu page: ", sessionStorage.getItem("userDetails"));
+        //this.usersInt2 = JSON.parse(sessionStorage.getItem("userDetails")) as UsersInt;
+        //console.log("user data in menu page is: ", this.usersInt2);
+        this.varlogin = true;
+        this.varlogin = true;
+        this.addcbutton = true;
+        this.userlogedrole = true;
+        if(this.useradmin != undefined && this.useradmin == "admin"){
+          console.log("admin var is 3: ", this.useradmin);
+          this.varadmin = true;
+        } else {
+          this.varadmin = false;
+          console.log("admin var is 4: ", this.useradmin);
+        }
       }
     });
   }
 
-  getMyUserById(uid: string) {
-    const path = "Users";
-    const id = uid;
-    this.myloginser.getUserById2<UsersInt>(path, id).subscribe( res => {
-      console.log("user data -> ", res);
-      if (res) {
-        //this.userprofile = res.urolecod;
-        this.usersInt = res;
-      }
-    });
-   }
+  refreshBrowser(){
+    //I need to refresh the browser to see changes in the menu
+    location.reload();
+  }
 
   logout(){
     console.log("Method logout() started: ");
     this.myloginser.logoutserv();
-    this.emptyAnInterface2();
     this.varlogin = false;
     this.addcbutton = false;
     this.varadmin = false;
     this.userlogedrole = false;
     this.showmess.presentToast("The user has logout successfully!");
-    this.router.navigateByUrl('/menu/confessions');
+    this.emptyAnInterface2();
+    this.callConfessions();
   }
 
   emptyAnInterface2(){
+
+    sessionStorage.removeItem("userDetails");
+    sessionStorage.clear();
     this.usersInt2 = {uid: "", uemail: "", upass: "", ualias: "", ucountry: "", uregpip: "", uregdate: "", urolecod: ""};
+    this.usersInt1 = {uid: "", uemail: "", upass: "", ualias: "", ucountry: "", uregpip: "", uregdate: "", urolecod: ""};
+
   }
 
   callConfessions(){

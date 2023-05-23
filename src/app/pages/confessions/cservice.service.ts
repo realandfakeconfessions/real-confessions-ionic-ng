@@ -84,7 +84,8 @@ export class CserviceService {
               curltext: doc.data().curltext,
               curlaudio: doc.data().curlaudio,
               converteds1: doc.data().converteds1,
-              converteds2: doc.data().converteds2
+              converteds2: doc.data().converteds2,
+              cuid: doc.data().cuid
             });
           });
         }
@@ -120,7 +121,8 @@ export class CserviceService {
                 curltext: doc.data().curltext,
                 curlaudio: doc.data().curlaudio,
                 converteds1: doc.data().converteds1,
-                converteds2: doc.data().converteds2
+                converteds2: doc.data().converteds2,
+                cuid: doc.data().cuid
               });
             });
             this.lastVisible = snap.docs[snap.docs.length-1] || null;

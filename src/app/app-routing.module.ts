@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AngularFireAuthGuard} from '@angular/fire/compat/auth-guard';
 
 const routes: Routes = [
   {
@@ -13,15 +14,18 @@ const routes: Routes = [
   },
   {
     path: 'categories',
-    loadChildren: () => import('./pages/categories/categories.module').then( m => m.CategoriesPageModule)
+    loadChildren: () => import('./pages/categories/categories.module').then( m => m.CategoriesPageModule),
+    canActivate: [AngularFireAuthGuard]
   },
   {
     path: 'confessionsnew',
-    loadChildren: () => import('./pages/confessionsnew/confessionsnew.module').then( m => m.ConfessionsnewPageModule)
+    loadChildren: () => import('./pages/confessionsnew/confessionsnew.module').then( m => m.ConfessionsnewPageModule),
+    canActivate: [AngularFireAuthGuard]
   },
   {
     path: 'confessionsshow',
-    loadChildren: () => import('./pages/confessionsshow/confessionsshow.module').then( m => m.ConfessionsshowPageModule)
+    loadChildren: () => import('./pages/confessionsshow/confessionsshow.module').then( m => m.ConfessionsshowPageModule),
+    canActivate: [AngularFireAuthGuard]
   },
   {
     path: 'login',
@@ -33,15 +37,18 @@ const routes: Routes = [
   },
   {
     path: 'comments',
-    loadChildren: () => import('./pages/comments/comments.module').then( m => m.CommentsPageModule)
+    loadChildren: () => import('./pages/comments/comments.module').then( m => m.CommentsPageModule),
+    canActivate: [AngularFireAuthGuard]
   },
   {
     path: 'profile',
-    loadChildren: () => import('./pages/profile/profile.module').then( m => m.ProfilePageModule)
+    loadChildren: () => import('./pages/profile/profile.module').then( m => m.ProfilePageModule),
+    canActivate: [AngularFireAuthGuard]
   },
   {
     path: 'roles',
-    loadChildren: () => import('./pages/roles/roles.module').then( m => m.RolesPageModule)
+    loadChildren: () => import('./pages/roles/roles.module').then( m => m.RolesPageModule),
+    canActivate: [AngularFireAuthGuard]
   }
 ];
 

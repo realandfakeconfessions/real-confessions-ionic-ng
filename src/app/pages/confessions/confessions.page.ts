@@ -11,9 +11,11 @@ import { ModalController } from '@ionic/angular';
 import { CserviceService } from './cservice.service';
 import { ConfessionsshowPage } from '../confessionsshow/confessionsshow.page';
 import { LoginPage } from '../login/login.page';
+import { LoginauthService } from '../signin/loginauth.service';
 
 import { ConfessionsInt } from './confessionsint';
 import { LanguageInt } from '../languages/languageint';
+import { UsersInt } from '../signin/usersint';
 
 interface InfiniteScrollCustomEvent extends CustomEvent {
 target: HTMLIonInfiniteScrollElement;
@@ -31,7 +33,10 @@ export class ConfessionsPage implements OnInit {
   mylimit: number = 3;
   apublicVar: string = "apublicVar with default value";
   cid: string = "noID";
+  logeduid: string;
+  confessuid: string;
   public static cid2: string = "tizdOZmPV9ZzCTueE3Nv";
+  varucedit: boolean = false;
   public selectedlang: LanguageInt;
   public selectedlang2: LanguageInt;
   langlist: LanguageInt[] = [];
@@ -41,18 +46,23 @@ export class ConfessionsPage implements OnInit {
 
   private colleccon = 'Confessions';
   confessionsint: ConfessionsInt;
+  userInfo2: UsersInt;
+  userInfo3: UsersInt;
   confessionsint2: any;
 
   constructor(
     private cserviceService: CserviceService,
     private activatedRoute: ActivatedRoute,
+    private myloginser: LoginauthService,
     private modalCtrl: ModalController){
       this.confessionsint = {} as ConfessionsInt;
+      this.userInfo2 = {} as UsersInt;
     }
 
   ngOnInit() {
     this.languages = this.activatedRoute.snapshot.paramMap.get('id');
     console.log("somehow I need an activateroute var, So I added: ", this.languages);
+
     if(this.selectedlang == undefined || this.selectedlang2 == undefined){
       console.log("Selected language is undefined: ", this.selectedlang);
       console.log("Selected language2 is undefined: ", this.selectedlang2);
@@ -61,7 +71,7 @@ export class ConfessionsPage implements OnInit {
       this.selectedlang2 = this.selectedlang;
     }
     this.callNgOninAgain();
-    console.log("User loged in sessionstorage 4: ", sessionStorage.getItem("userDetails"));
+    this.loginUserState3();
   }
 
  /**
@@ -79,6 +89,7 @@ export class ConfessionsPage implements OnInit {
    record.Editcurlaudio = record.curlaudio;
    record.Editconverteds1 = record.converteds1;
    record.Editconverteds2 = record.converteds2;
+   record.Editcuid = record.cuid;
    console.log("Show the selected record: " +record.ctitle);
  }
 
@@ -94,6 +105,7 @@ export class ConfessionsPage implements OnInit {
    record['curlaudio'] = recordRow.Editcurlaudio;
    record['converteds1'] = recordRow.Editconverteds1;
    record['converteds2'] = recordRow.Editconverteds2;
+   record['cuid'] = recordRow.Editcuid;
    this.cserviceService.updateConfessions(recordRow.id, record);
    recordRow.isEdit = false;
  }
@@ -207,10 +219,20 @@ chooseALanguage(){
                this.confessionswlimit = this.cserviceService.getRecordsLimit(this.selectedlang.lcode, this.mylimit);
                console.log("First thing to load is my list: ja", this.confessionswlimit);
                console.log("Array length at ending ja: ", this.confessionswlimit.length);
-               break;
+                 break;
            }
          } // end for
    }); // end subscribe
+}
+
+userCeditDele(){
+
+  console.log("method userCeditDele() started: ");
+  if(this.confessionswlimit.length > 0){
+    for(let i = 0; i < this.confessionswlimit.length; i++){
+      console.log("Confession user owner is: ", this.confessionswlimit[i].cuid);
+    }
+  }
 }
 
 // call ionic infinite scroll
@@ -248,6 +270,40 @@ callNgOninAgain(){
     this.confessionswlimit.length = 0
   }
   this.chooseALanguage();
+}
+
+loginUserState3(){
+  this.myloginser.userState().subscribe( res => {
+    if(res){
+
+      const path = "Users";
+      const myuid3 = res.uid;
+
+      if(myuid3 != null || myuid3 != ""){
+        console.log("User loged id confessions page: ", myuid3);
+        this.getUserInfo3(path, myuid3);
+      }
+    } else {
+      console.log("No user is loged");
+    }
+  });
+}
+
+getUserInfo3(path: string, id: string){
+  console.log("method getUserInfo3(): started");
+  this.myloginser.getUserById2<UsersInt>(path, id).subscribe( res => {
+    if (res) {
+      this.userInfo2 = res;
+      //sessionStorage.setItem('userDetails', JSON.stringify(this.userInfo2));
+      //console.log("User loged in confessions page: ", sessionStorage.getItem("userDetails"));
+      //this.userInfo3 = JSON.parse(sessionStorage.getItem("userDetails")) as UsersInt;
+      //console.log("user data is in confessions page: ", this.userInfo3);
+      if(this.userInfo2.urolecod == "admin"){
+        console.log("only admin can edit and delete for now: ", this.userInfo2.urolecod);
+        this.varucedit = true;
+      }
+    }
+  });
 }
 
  /**

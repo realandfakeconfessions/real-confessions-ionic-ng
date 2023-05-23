@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router,NavigationEnd   } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,14 @@ import { Component } from '@angular/core';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor() {}
+  constructor(private router: Router) {
+
+    //this call only one page after refresh
+    //this.router.events.subscribe((e) => {
+    //  if (e instanceof NavigationEnd) {
+    //    console.log(e); //Function that you want to call
+    //    this.router.navigateByUrl('/menu/confessions');
+    //  }
+    //});
+  }
 }

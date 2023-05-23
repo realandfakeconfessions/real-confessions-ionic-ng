@@ -19,7 +19,15 @@
 
   <ion-item>
     <ion-label position="floating">Category Description</ion-label>
-    <ion-input formControlName="cdescription"></ion-input>
+    <ion-input
+    id="custom-input"
+    label="Custom Counter Format"
+    labelPlacement="floating"
+    [counter]="true"
+    maxlength="500"
+    [counterFormatter]="customCounterFormatter"
+    formControlName="cdescription">
+  </ion-input>
   </ion-item>
 
   <ion-item>
