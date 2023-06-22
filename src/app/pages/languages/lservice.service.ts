@@ -11,15 +11,14 @@ export class LserviceService {
   collectionName = 'Languages';
 
   constructor(
-    private firestore: AngularFirestore
-  ) { }
+    private firestore: AngularFirestore){
+    }
 
   readLanguage(){
     return this.firestore.collection(this.collectionName).snapshotChanges();
   }
 
   createLanguage(lang){
-    console.log(lang);
     return this.firestore.collection(this.collectionName).add(lang);
   }
 

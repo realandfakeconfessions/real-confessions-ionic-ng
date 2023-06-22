@@ -11,15 +11,14 @@ import { ConfessionsInt } from './confessionsint';
 export class CserviceService {
 
   collectionName = 'Confessions';
-  public objtoStr: string = "Default empty by me";
   confint: ConfessionsInt;
   lastVisible: any;
   confessionswlimit : any = [];
   mylength1: number;
 
   constructor(
-    private firestore: AngularFirestore
-  ) { }
+    private firestore: AngularFirestore){
+     }
 
   // ref => ref.orderBy('cdate', 'asc')
   // ref => ref.orderBy('cdate', 'desc')
@@ -37,12 +36,6 @@ export class CserviceService {
       .where("clanguage", "==", lcode)
       .orderBy("cdate", "desc"))
       .snapshotChanges();
-    return docRef;
-  }
-
-  readConfessions4(lcode: string, mylimit: number){
-    const docRef = this.firestore.collection(this.collectionName, ref =>
-      ref.limit(mylimit).where("clanguage", "==", lcode)).snapshotChanges();
     return docRef;
   }
 
@@ -134,16 +127,10 @@ export class CserviceService {
       return this.confessionswlimit;
   }
 
-  findAllobj<tipo>(path: string) {
+  findAllobj<tipo>(path: string){
     const docRef = this.firestore.collection<tipo>(path).valueChanges();
     return docRef;
   }
-
-  findAllobjObservable<tipo>(path: string, lcode: string) {
-    const docRef = this.firestore.collection<tipo>(path, ref => ref.where("clanguage", "==", lcode)).valueChanges();
-    return docRef;
-  }
-
 
   createConfessions(confess){
     console.log(confess);
@@ -165,5 +152,29 @@ export class CserviceService {
     const docRef = this.firestore.collection<tipo>(path).doc(id).valueChanges();
     return docRef
  }
+
+ /**
+ * Return comments from a confession with observable
+ */
+ findConfCommByid<tipo>(path1: string, id1: string, path2: string, id2: string){
+
+   const docRef = this.firestore.collection<tipo>(path1).doc(id1)
+   .collection<tipo>(path2).doc(id2)
+   .valueChanges();
+
+   return docRef
+}
+
+/**
+* Return comments from a confession
+*/
+findConfCommByid2(path1: string, id1: string, path2: string){
+
+  const docRef = this.firestore.collection(path1).doc(id1)
+  .collection(path2)
+  .snapshotChanges();
+
+  return docRef
+}
 
 }

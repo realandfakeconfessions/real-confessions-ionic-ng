@@ -22,7 +22,6 @@ export class RolesPage implements OnInit {
 
   ngOnInit() {
     this.fillRoleDocument();
-    //this.getUserLogedConf();
   }
 
   fillRoleDocument(){
@@ -40,8 +39,6 @@ export class RolesPage implements OnInit {
           console.log("No User loged in yet fillRoleDocument()");
         }
       });
-
-
   }
 
   getUserInfo4(path: string, id: string){

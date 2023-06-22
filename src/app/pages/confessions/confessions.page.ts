@@ -29,10 +29,8 @@ target: HTMLIonInfiniteScrollElement;
 })
 export class ConfessionsPage implements OnInit {
 
-  public languages: string;
   mylimit: number = 3;
   apublicVar: string = "apublicVar with default value";
-  cid: string = "noID";
   logeduid: string;
   confessuid: string;
   public static cid2: string = "tizdOZmPV9ZzCTueE3Nv";
@@ -60,8 +58,6 @@ export class ConfessionsPage implements OnInit {
     }
 
   ngOnInit() {
-    this.languages = this.activatedRoute.snapshot.paramMap.get('id');
-    console.log("somehow I need an activateroute var, So I added: ", this.languages);
 
     if(this.selectedlang == undefined || this.selectedlang2 == undefined){
       console.log("Selected language is undefined: ", this.selectedlang);
@@ -120,12 +116,12 @@ export class ConfessionsPage implements OnInit {
 
  /**
  * Find a confession record by id
+ * and show it on a modal
  */
 findConfbyid(rowID) {
 
   console.log(rowID);
   console.log("apublicVar value is without a change: ", this.apublicVar);
-  this.cid = rowID;
   ConfessionsPage.cid2 = rowID;
 
   if (Object.keys(this.confessionsint).length === 0) {
@@ -140,7 +136,6 @@ findConfbyid(rowID) {
 }
   console.log(this.confessionsint);
   console.log("apublicVar value is with changes: ", this.apublicVar);
-  console.log("The selected confession id is: ", this.cid);
 
   this.openCardModal2();
 }
@@ -225,16 +220,6 @@ chooseALanguage(){
    }); // end subscribe
 }
 
-userCeditDele(){
-
-  console.log("method userCeditDele() started: ");
-  if(this.confessionswlimit.length > 0){
-    for(let i = 0; i < this.confessionswlimit.length; i++){
-      console.log("Confession user owner is: ", this.confessionswlimit[i].cuid);
-    }
-  }
-}
-
 // call ionic infinite scroll
 onIonInfinite(ev) {
   console.log("Method onIonInfinite(ev): started");
@@ -272,6 +257,11 @@ callNgOninAgain(){
   this.chooseALanguage();
 }
 
+
+/**
+* Check if there is a loged user
+* or not
+**/
 loginUserState3(){
   this.myloginser.userState().subscribe( res => {
     if(res){
@@ -289,6 +279,10 @@ loginUserState3(){
   });
 }
 
+/**
+* If there is a loged user
+* then find his information
+**/
 getUserInfo3(path: string, id: string){
   console.log("method getUserInfo3(): started");
   this.myloginser.getUserById2<UsersInt>(path, id).subscribe( res => {

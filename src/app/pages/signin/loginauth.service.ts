@@ -14,6 +14,7 @@ export class LoginauthService {
   collectionName2 = 'Profiles';
   collectionName3 = 'Countries';
   collectionName4 = 'Confessions';
+  collectionName5 = 'SubcMessages';
   myuserloged: any;
   myuserloged2: UsersInt;
 
@@ -50,36 +51,49 @@ export class LoginauthService {
     return this.fireauth.authState;
   }
 
+  //get the user ip
   getUseripServ(){
     return this.http.get(this.url);
   }
 
+  //get the user ip
   getUseripServ2(url: string){
     return this.http.get(url);
   }
 
-  createUser(user){
-    console.log("created user is: ", user);
-    return this.firestore.collection(this.collectionName).add(user);
-  }
-
-  createUser2(user){
-    return this.fireauth.createUserWithEmailAndPassword(user.uemail, user.upass);
-  }
-
+  //create auto id before creating an object
   getId(){
     return this.firestore.createId();
   }
 
+  /**
+  * create a user with
+  * email and password
+  */
+  createUser2(user){
+    return this.fireauth.createUserWithEmailAndPassword(user.uemail, user.upass);
+  }
+
+  /**
+  * create a user document
+  * with extra information about
+  * the new created user
+  */
   createUser3(data: any, path: string, id: string){
     const coll = this.firestore.collection(path);
     return coll.doc(id).set(data);
   }
 
+  //retrieve the user's profile
   readProfile(){
     return this.firestore.collection(this.collectionName2).snapshotChanges();
   }
 
+  /**
+  * retrieve the confessions that
+  *the user has written along the
+  * different languages that exists
+  */
   readUserConfessions(userlogedid: string){
     var docRef =  this.firestore.collection(this.collectionName4, ref => ref
       .where("cuid", "==", userlogedid)
@@ -88,23 +102,39 @@ export class LoginauthService {
     return docRef;
   }
 
+  //insert a profile object
   createProfile(profile){
-    console.log("created profile is: ", profile);
+    //console.log("created profile is: ", profile);
     return this.firestore.collection(this.collectionName2).add(profile);
   }
 
+  readConfessionDoc(confid: string){
+    const docRef = this.firestore.collection(this.collectionName4).doc(confid);
+    console.log("my confession ref is: ", docRef);
+    return docRef;
+  }
+
+  //insert a comment object
+  createComment2(confid: string, comment){
+    const docRef = this.firestore.collection(this.collectionName4).doc(confid)
+    .collection(this.collectionName5).add(comment);
+    return docRef;
+  }
+
+  //update a profile object
   updateProfile(id, prof){
     this.firestore.doc(this.collectionName2 + '/' + id).update(prof);
   }
 
+  //delete a profile object
   deleteProfile(id){
     this.firestore.doc(this.collectionName2 + '/' + id).delete();
   }
 
-  getUserById<tipo>(path: string, id: string) {
-    return this.firestore.collection(path).doc<tipo>(id).valueChanges();
-  }
-
+  /**
+  * get the information from the specific
+  * user
+  */
   getUserById2<tipo>(path: string, id: string) {
     const docRef = this.firestore.collection<tipo>(path).doc(id).valueChanges();
     return docRef
@@ -114,33 +144,5 @@ export class LoginauthService {
    const docRef = this.firestore.collection<tipo>(path).doc(id).valueChanges();
    return docRef
 }
-
- readCountry(){
-   return this.firestore.collection(this.collectionName3).snapshotChanges();
- }
-
- findDocuById(id){
-
-   const coll = "Users";
-
-   var docRef = this.firestore.collection(coll).doc(id);
-
-   docRef.get().toPromise().then((doc) => {
-       if (doc.exists) {
-           //console.log("Document data:", doc.data());
-           this.myuserloged = doc.data();
-           this.myuserloged2 = this.myuserloged;
-           console.log("This.myuserloged2 is: ", this.myuserloged2);
-       } else {
-           // doc.data() will be undefined in this case
-           console.log("No such document!");
-       }
-   }).catch((error) => {
-       console.log("Error getting document:", error);
-   });
-
-   return this.myuserloged2;
-
- }
 
 }

@@ -13,8 +13,6 @@ import { CategoriesInt } from './categoriesint';
 })
 export class CategoriesPage implements OnInit {
 
-  public categories: string;
-
   categoryList = [];
   categoryData: CategoriesInt;
   categoryForm: FormGroup;
@@ -22,19 +20,21 @@ export class CategoriesPage implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private caserviceService: CaserviceService,
-    public fb: FormBuilder
- ) {
-   this.categoryData = {} as CategoriesInt;
- }
+    public fb: FormBuilder) {
+      this.categoryData = {} as CategoriesInt;
+    }
+
 
  ngOnInit() {
-
-   this.categories = this.activatedRoute.snapshot.paramMap.get('id');
 
    this.categoryForm = this.fb.group({
      cname: ['', [Validators.required]],
      cdescription: ['', [Validators.required]]
-   })
+   });
+   this.loadCategList();
+ }
+
+ loadCategList(){
 
    this.caserviceService.readCategory().subscribe(data => {
 

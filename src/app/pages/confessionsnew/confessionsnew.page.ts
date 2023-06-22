@@ -57,8 +57,30 @@ export class ConfessionsnewPage implements OnInit {
       cisreal: ['', [Validators.required]],
       ccategory: ['', [Validators.required]],
       ctext: ['', [Validators.required]],
-    })
+    });
+    this.loadCategoList();
+    this.loadLanguaList();
+    this.isUserLoged();
+  }
 
+  loadCategoList(){
+    // Read the category's list
+    this.caserviceService.readCategory().subscribe(data => {
+
+      this.categoryList = data.map(e => {
+        return {
+          id: e.payload.doc['id'],
+          isEdit: false,
+          cname: e.payload.doc.data()['cname'],
+          cdescription: e.payload.doc.data()['cdescription'],
+        };
+      })
+
+    });
+
+  }
+
+  loadLanguaList(){
     // Read the languages' list
     this.lserviceService.readLanguage().subscribe(data => {
 
@@ -74,20 +96,6 @@ export class ConfessionsnewPage implements OnInit {
 
     });
 
-    // Read the category's list
-    this.caserviceService.readCategory().subscribe(data => {
-
-      this.categoryList = data.map(e => {
-        return {
-          id: e.payload.doc['id'],
-          isEdit: false,
-          cname: e.payload.doc.data()['cname'],
-          cdescription: e.payload.doc.data()['cdescription'],
-        };
-      })
-
-    });
-    this.isUserLoged();
   }
 
   isUserLoged(){

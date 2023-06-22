@@ -1,9 +1,22 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>comments</ion-title>
+  <ion-toolbar color="primary">
+    <ion-title>Confession Comments</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="dark" fill="solid" (click)="dismissModalComm()">Close</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+
+  <h1>Show your confession comments!</h1>
+  <ion-card *ngFor="let item of commentsList2" color="primary">
+    <ion-card-header>
+      <ion-card-title>{{item.id}}</ion-card-title>
+      <ion-card-title>{{item.ccdate}}</ion-card-title>
+      <ion-card-title>{{item.ccomment}}</ion-card-title>
+      <ion-card-title>{{item.ccuserid}}</ion-card-title>
+    </ion-card-header>
+  </ion-card>
 
 </ion-content>

@@ -60,6 +60,10 @@ export class MenuPage implements OnInit {
     this.loginUserState();
   }
 
+  /**
+  * Check if there is a loged user
+  * or not
+  **/
   loginUserState(){
     this.myloginser.userState().subscribe( res => {
       if(res){
@@ -73,6 +77,10 @@ export class MenuPage implements OnInit {
     });
   }
 
+  /**
+  * retrieve user information and
+  * save it to an interface
+  */
   getUserInfo2(path: string, id: string){
     console.log("method getUserInfo2(): started");
     //this.emptyAnInterface2();
@@ -102,11 +110,12 @@ export class MenuPage implements OnInit {
     });
   }
 
+  //I need to refresh the browser to see changes in the menu
   refreshBrowser(){
-    //I need to refresh the browser to see changes in the menu
     location.reload();
   }
 
+  //log out the currect user
   logout(){
     console.log("Method logout() started: ");
     this.myloginser.logoutserv();
@@ -119,6 +128,7 @@ export class MenuPage implements OnInit {
     this.callConfessions();
   }
 
+  //clear the sessionStorage and redirect to confessions page
   emptyAnInterface2(){
 
     sessionStorage.removeItem("userDetails");
@@ -128,11 +138,14 @@ export class MenuPage implements OnInit {
 
   }
 
+  //call the confessions page
   callConfessions(){
     console.log("Method callConfessions() started: ");
     this.router.navigateByUrl('/menu/confessions');
   }
 
+  //if the user is loged
+  // then call the role page
   callUserRole(){
     if(this.userlogedrole){
       console.log("Method callUserRole() started: ");

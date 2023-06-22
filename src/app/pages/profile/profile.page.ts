@@ -28,8 +28,11 @@ export class ProfilePage implements OnInit {
     this.profileForm = this.fb.group({
       pname: ['', [Validators.required]],
       pdesc: ['', [Validators.required]]
-    })
+    });
+    this.loadProfList();
+  }
 
+  loadProfList(){
     this.loginauthService.readProfile().subscribe(data => {
 
       this.profileList = data.map(e => {

@@ -18,8 +18,8 @@ export class LanguagesPage implements OnInit {
   constructor(
    private lserviceService: LserviceService,
    public fb: FormBuilder) {
-   this.languageData = {} as LanguageInt;
- }
+     this.languageData = {} as LanguageInt;
+   }
 
  ngOnInit() {
 

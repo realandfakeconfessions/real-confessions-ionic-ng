@@ -17,7 +17,6 @@ export class LoginPage implements OnInit {
   loginData: UsersInt;
   loginData2: UsersInt;
   loginForm!: FormGroup;
-  myuserloged2: any;
 
   constructor(
     private modalCtrl: ModalController,
@@ -33,7 +32,6 @@ export class LoginPage implements OnInit {
       uemail: ['', [Validators.required]],
       upass: ['', [Validators.required]]
     });
-    //this.loginUserState2();
   }
 
   /**
@@ -66,12 +64,7 @@ export class LoginPage implements OnInit {
 
   }
 
-  refreshBrowser(){
-    this.router.navigateByUrl('/menu/roles');
-    //I need to refresh the browser to see changes in the menu
-    //location.reload();
-  }
-
+  //clear the sessionStorage and redirect to confessions page
   emptyAnInterface(){
     this.loginData = {uid: "", uemail: "", upass: "", ualias: "", ucountry: "", uregpip: "", uregdate: "", urolecod: ""};
     this.loginData2 = {uid: "", uemail: "", upass: "", ualias: "", ucountry: "", uregpip: "", uregdate: "", urolecod: ""};
@@ -80,36 +73,10 @@ export class LoginPage implements OnInit {
     this.router.navigateByUrl('/menu/confessions');
   }
 
-  loginUserState2(){
-    this.myloginser.userState().subscribe( res => {
-      if(res){
-        console.log("response in loginUserState2(): ", res);
-        const path = "Users";
-        const myuid2 = res.uid;
-
-        if(myuid2 != null || myuid2 != ""){
-          this.getUserInfo2(path, myuid2);
-        }
-      } else {
-        console.log("user no loged in");
-      }
-    });
-  }
-
-  getUserInfo(){
-    const path = "Users";
-    const myuid = "AEf2sFPYtCdrZnmVwZNCKabLcFB3";
-    this.myloginser.getUserById2<UsersInt>(path, myuid).subscribe( res => {
-      if (res) {
-        this.loginData = res;
-        console.log("user data in default user is: ", this.loginData);
-        sessionStorage.setItem('userDetails', JSON.stringify(this.loginData));
-        console.log("User loged in sessionstorage 1: ", sessionStorage.getItem("userDetails"));
-        this.loginData2 = JSON.parse(sessionStorage.getItem("userDetails")) as UsersInt;
-      }
-    });
-  }
-
+  /**
+  * retrieve user information and
+  * save it to sessionStorage
+  */
   getUserInfo2(path: string, id: string){
     console.log("method getUserInfo2(): started");
     this.myloginser.getUserById2<UsersInt>(path, id).subscribe( res => {

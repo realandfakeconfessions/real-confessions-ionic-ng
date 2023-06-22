@@ -9,15 +9,15 @@ export class CaserviceService {
   collectionName = 'Categories';
 
   constructor(
-    private firestore: AngularFirestore
-  ) { }
+    private firestore: AngularFirestore){
+
+    }
 
   readCategory(){
     return this.firestore.collection(this.collectionName).snapshotChanges();
   }
 
   createCategory(category){
-    console.log(category);
     return this.firestore.collection(this.collectionName).add(category);
   }
 

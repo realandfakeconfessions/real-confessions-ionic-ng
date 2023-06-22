@@ -25,7 +25,6 @@ export class SigninPage implements OnInit {
   countriesInt: CountriesInt;
   signupForm: FormGroup;
   signupForm2: FormGroup;
-  countryList = [];
   usercountry: string;
 
   constructor(private http: HttpClient,
@@ -43,7 +42,6 @@ export class SigninPage implements OnInit {
 
   ngOnInit() {
     this.getUserIP();
-    //this.getCountries();
     console.log("ip from ngoninit: ", this.ipAddress);
     console.log("ip country ngoninit: ", this.ipCountry);
     this.signupForm = this.fb.group({
@@ -51,40 +49,9 @@ export class SigninPage implements OnInit {
       upass: ['', [Validators.required]],
       ualias: ['', [Validators.required]],
       urolecod: ['', [Validators.required]]
-    })
-  }
-
-  /**
-  * sign up new users
-  */
-  signupUser() {
-    console.log("Method signupUser() started: ");
-
-    this.signupForm2 = this.fb2.group({
-      uemail: [this.signupForm.value.uemail],
-      upass: [this.signupForm.value.upass],
-      ualias: [this.signupForm.value.ualias],
-      ucountry: [this.ipCountry],
-      uregpip: [this.ipAddress],
-      uregdate: [this.dateString],
-      urolecod: [this.signupForm.value.urolecod]
     });
-
-    this.myloginser.createUser(this.signupForm2.value)
-      .then(resp => {
-        if(resp){
-          console.log("My new user is: ", resp);
-          this.showmess.presentToast("The new user was created!");
-          this.router.navigateByUrl('/menu/confessions');
-          this.dismissModal2();
-        }
-        this.signupForm.reset();
-      })
-      .catch(error => {
-        console.log(error);
-        this.showmess.presentToast("The user could not be created! Check your credentials again");
-      });
   }
+
 
   /**
   * sign up new users
@@ -131,41 +98,10 @@ export class SigninPage implements OnInit {
       });
   }
 
-  getCountries(){
-
-    console.log("Method getCountries(): started");
-
-      console.log("Country code this.ipCountry is: ", this.ipCountry);
-
-      this.myloginser.readCountry().subscribe(data => {
-
-        this.countryList = data.map(e => {
-          return {
-            id: e.payload.doc['id'],
-            alpha2: e.payload.doc.data()['alpha2'],
-            cid: e.payload.doc.data()['cid'],
-            country: e.payload.doc.data()['country'],
-          };
-        })
-        //console.log("My country list: ", this.countryList.map(myv => myv));
-      });
-
-  }
-
-  getCountries2(){
-    if (this.countryList.length > 0 && this.ipCountry != ""){
-      for (let i = 0; i < this.countryList.length; i++){
-        //console.log("A for bucle to a list: ", this.countryList[i]);
-        if(this.countryList[i].alpha2 == this.ipCountry){
-          this.usercountry = this.countryList[i].country;
-          console.log("Your country code is: ", this.countryList[i].cid);
-          console.log("Your country name is: ", this.usercountry);
-        }
-      }
-    }
-
-  }
-
+  /**
+  * Check what is the user country
+  * that want to sign up
+  **/
   getCountryByid(){
     console.log("Method getCountryByid(): started");
     const path = "Countries";
@@ -184,6 +120,10 @@ export class SigninPage implements OnInit {
     }
   }
 
+  /**
+  * Check what is the user ip
+  * that want to sign up
+  **/
   getUserIP(){
 
     this.myloginser.getUseripServ2(this.url1).toPromise().then( (res:any) => {
@@ -202,17 +142,6 @@ export class SigninPage implements OnInit {
 
   }
 
-  getUserIP2(){
-    this.http.get(this.url1).subscribe((res:any) => {
-      console.log(res);
-      this.ipAddress = res.ip;
-      this.ipCountry = res.country;
-      console.log("user ip is: ", this.ipAddress);
-    },
-    (error) => {
-      console.log("Error getting user ip, method getUserIP2(): ", error);
-   });
-  }
 
   /**
   * Close my modal window, confession signin
